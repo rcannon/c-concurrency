@@ -1,0 +1,175 @@
+fopen - open a file in c
+
+--
+
+--
+
+shm_size - how much memory in bites we want in our shared mem segment
+
+    shm_size = nthreads * per thread shared size (when using same amount for each thread)
+        per thread shared mem size should be power of 2 (for alignment puproses)
+
+    for my_thread_id in 1..n:
+        my_offset = my_thread_id * per_thread_shared_mem_size
+
+    split each per_thread mem blocks into 2 parts: server area and client area:
+        server can write in server area, client in client's, each read from other's
+
+    shm_addr_base - pointer to shared mem block
+    my_shared_block = shm_addr_base + my_offset
+
+    my_server_area = my_shared_block;
+    my_client_area = my_server_area + (per_thread_shared_mem_size / 2)
+
+    server needs array of pointers to point to server area of each client
+
+    create shared memory segment before forked (so it is visible to all processes)
+
+shmget - allocate system V shared memory segment
+ipc_create - flag that rank 0 will use to create shared segment
+shmat - attach to shm address
+ftok - get key type for shmget
+
+
+''c
+shmflag = IPC_CREATE
+key_t shm_key
+system("touch /dev/shm/some_file")
+
+some_integer = 42 -- only req is greate than zero
+shm_key = ftok("/dev/shm/some_file", some_integer)
+    -- this file must exist
+    -- some_integer must be greather than zero
+int shmid
+shmid = shmget(shm_key, size, shmflag) -- creates shared mem segment
+    -- shmid is -1 if error (such as size too large)
+shmflag = 0
+shmaddr = NULL
+shm_addr_base = shmat(shmid, shmaddr, shmflag)
+    - returns (void *) -1
+
+shmdt(shmid) -- detatch
+
+''
+
+$ ipcs -a # show active shared memeory segemnt information
+
+-- struct variable order:
+    1. pointers 
+    2. eight byte vars (double, int64_t)
+    3. vars less than 8 bytes
+
+''server_struct.h
+struct server {
+    double* p;
+    int64_t dialog_counter;
+    int64_t tasks;
+    int64_t state;
+    int quit;
+
+}
+''
+
+''client_struct.c
+struct client {
+    int64_t dialog_counter;
+    int64_t tasks;
+    int64_t state;
+''
+
+''stuff.c
+
+struct client_struct * my_client_data;
+struct server_struct * my_server_data;
+
+int64_t server_dialog;
+int64_t client_dialog;
+
+my_server_data = (struct server *) my_server_area; 
+server_dialog = my_server_data->dialog_counter;
+
+my_client_data = (struct client *) my_client_area;
+client_dialog = my_client_data->dialog_counter;
+
+if (my_thread_id == 0) {
+    execute_server_code(my_unique_log_file, ...);
+
+}
+else {
+    execute_client_code(my_unique_log_file, ...);
+}
+''
+
+''server_stuff.c
+
+execute_server() {
+    do stuff, argc, argv, read data, build tasks list;
+
+    -- poll clients for ready to work or task_result
+    void * client_shm_area;
+    void * shm_addr_base
+    for (client_id = 1; client_id < p; client_id ++){
+
+        client_shm_area = shm_addr_base + client_id * per_thread_shared_mem_size; 
+            -- caution address arithmetic
+
+        client_server_side = (struct server *) client_shm_area;
+        client_client_side = (struct client *) client_shm_area + per_thread_shared_mem_size / 2;
+        if (client_client_side->dialog_counter > client_server_side->dialog_coutner) {
+            client_server_side->task = task_number_of_next_task_to_execute;
+                -- if there is one, otherwise set the quit field of the client server area
+            if (client_server_side->task is a real task (say > 0)) {
+                process & store result 
+            }
+            msync(client_server_side->task, 8 <length in bytes>);
+            client_server_side->dialog_counter += 1;
+            msync(client_server_side->dialog_counter, 8);
+        }
+
+
+    }
+}
+''
+
+''client_stuff.c
+
+do_client() {
+
+    does stuff like attaching to shared memeory segment and 
+        setting my_server_area and my_client_area based on my_thread_id and shm_size and num_threads
+
+    volatile struct server * my_server_area;
+    volatile struct client * my_client_area;
+        -- volatile means that some other process could change the values,
+            so the processor must load it from memory each time instead of putting in register (see while loop below)
+    
+    my_server_data = (struct server *) my_server_area; 
+
+    my_client_data = (struct client *) my_client_area;
+
+    not_done = 1;
+    while (not_done) {
+
+        my_client_data->dialog_dialog += 1
+        while (my_server_data->dialog_counter < my_client_data->dialog_counter);
+
+        my_client_data->task = my_server_data->task;
+        fprintf(my_log_file, "I got task %ld\n", my_client_data->task);
+
+        -- tell server that task is finished
+        my_client_data->dialog_counter +=1;
+        if (my_server_data->quit){
+            not_done = 0;
+        }
+        msync(my_client_data->results, result_length)
+        msync(my_client_data->dialog_counter,8)
+    }
+
+    void *client_shm_area;
+    void *shm_addr_base;
+    
+}
+
+''
+
+** print out result of sched_getaffinity, make sure they are different for each thread

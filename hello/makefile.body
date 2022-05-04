@@ -1,0 +1,22 @@
+all: hello
+
+OBJS = print_string.o
+INCS = system_includes.h
+HLIB = hello_lib.a 
+
+hello: hello.o $(HLIB)
+	$(CC) -o hello hello.o $(HLIB)
+
+hello_lib.a: $(OBJS)
+
+hello.o: hello.c print_string.h $(INCS)
+	$(CC) $(CFLAGS) hello.c 
+
+print_string.o: print_string.c print_string.h $(INCS)
+	$(CC) $(CFLAGS) print_string.c
+	$(AR) $(ARFLAGS) $(HLIB) print_string.o
+
+clean:
+	/bin/rm -f hello
+	/bin/rm -f *.o
+	/bin/rm -f *.a

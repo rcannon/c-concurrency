@@ -1,0 +1,7 @@
+{
+    "cmake.configureOnOpen": false,
+    "editor.acceptSuggestionOnEnter": "off",
+    "files.associations": {
+        "client_struct.h": "c"
+    }
+}
