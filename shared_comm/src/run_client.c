@@ -8,48 +8,42 @@ run_client( FILE* my_lfp
           , size_t mem_per_thread
           )
 {
+    //fprintf(my_lfp, "mem per thread = %ld\n", mem_per_thread);
+    //fflush(my_lfp);
     int done;
     void* my_server_area;
     void* my_client_area;
     int ret_val;
     int save_errno;
-    size_t client_struct_size;
+    //size_t client_dialog_counter_size;
+    size_t client_size;
 
     volatile struct server_struct * my_server_data;
     volatile struct client_struct * my_client_data;
 
-    // caution address arithmetic
-    my_server_area = shm_addr_base + (mem_per_thread * my_thread_id);
+    my_server_area = shm_addr_base + (mem_per_thread * my_thread_id); // address arithmetic
     my_server_data = (struct server_struct *) my_server_area;
-    print_string(my_lfp, "hi again\n");
 
-    my_client_area = my_server_area + (mem_per_thread / 2);
+    my_client_area = my_server_area + (mem_per_thread / 2); // address arithmetic
+    //fprintf(my_lfp, "diff = %ld\n", my_client_area - shm_addr_base);
+    //fflush(my_lfp);
     my_client_data = (struct client_struct *) my_client_area;
-    print_string(my_lfp, "hi again\n");
-    my_client_data->dialog_counter = 0;
-    client_struct_size = sizeof(struct client_struct);
+    //client_dialog_counter_size = sizeof(my_client_data->dialog_counter);
+    client_size = sizeof(struct client_struct);
 
     done = 0;
 
     while (!done) {
 
+        // tell server ready for task
         my_client_data->dialog_counter +=1;
-        while(my_server_data->dialog_counter < my_client_data->dialog_counter);
 
-        my_client_data->task = my_server_data->task;
-        fprintf(my_lfp, "I got task %ld\n", my_client_data->task);
-        fflush(my_lfp);
-        done = 1;
-
-        /* tell server that task is finished */
-        my_client_data->dialog_counter += 1;
-        
         ret_val = msync ( my_client_area
-                        , client_struct_size
+                        , client_size
                         , MS_SYNC
                         );
         save_errno = errno;
-        if (ret_val == -1){
+        if (ret_val != 0){
             if (my_lfp){
                 fprintf ( my_lfp
                         , "msync: syncing failed with errno = %d, %s\n"
@@ -62,5 +56,14 @@ run_client( FILE* my_lfp
                 print_outfile_not_found(my_thread_id);
             }
         }
+
+        // wait for server to give me task
+        while(my_server_data->dialog_counter < my_client_data->dialog_counter);
+
+        // do task
+        my_client_data->task = my_server_data->task;
+        fprintf(my_lfp, "I got task %ld\n", my_client_data->task);
+        fflush(my_lfp);
+        done = 1;
     }
 }

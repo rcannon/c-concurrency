@@ -4,7 +4,7 @@
 #SBATCH -p short
 ##SBATCH --ntasks-per-node=64
 #SBATCH -N 1
-#SBATCH -t 10
+#SBATCH -t 5
 #SBATCH -o out%J.out
 #SBATCH -e err%J.out
 #SBATCH -J fnb

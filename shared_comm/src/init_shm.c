@@ -4,7 +4,7 @@
 void
 init_shm( int n_threads
         , size_t mem_per_thread
-        , void* shm_addr_base
+        , void** shm_addr_base
         )
 {
     key_t shm_key;
@@ -35,9 +35,9 @@ init_shm( int n_threads
     }
     
     shm_addr = NULL;
-    shm_addr_base = shmat(shm_id, shm_addr, shm_flag);
+    *shm_addr_base = shmat(shm_id, shm_addr, shm_flag);
     save_errno = errno;
-    if (shm_addr_base == (void *) -1){
+    if (*shm_addr_base == (void *) -1){
         fprintf ( stderr
                 , "shmat failed with errno: %d, %s\n"
                 , save_errno

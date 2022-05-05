@@ -8,7 +8,7 @@
 void
 init_shm( int n_threads
         , size_t mem_per_thread
-        , void* shm_addr_base
+        , void** shm_addr_base
         );
 
 #endif
