@@ -25,7 +25,7 @@ run_server( FILE* my_lfp
     client_server_size = sizeof(struct server_struct);
 
     done = 0;
-    while (done < 2) {
+    while (done < n_threads) {
 
         for (client_id = 1; client_id < n_threads; client_id++) {
 

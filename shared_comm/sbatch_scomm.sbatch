@@ -55,7 +55,7 @@ echo "Running program."
 echo 
 
 touch /tmp/start.time
-bin/shared_comm 3
+bin/shared_comm 64
 touch /tmp/end.time
 
 sleep 5
