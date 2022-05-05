@@ -25,7 +25,7 @@ run_server( FILE* my_lfp
     client_server_size = sizeof(struct server_struct);
 
     done = 0;
-    while (done < n_threads) {
+    while (done < n_threads-1) {
 
         for (client_id = 1; client_id < n_threads; client_id++) {
 
@@ -41,6 +41,9 @@ run_server( FILE* my_lfp
             if (client_client_data->dialog_counter > client_server_data->dialog_counter) {
 
                 done += 1;
+
+                fprintf(my_lfp, "now on job %d\n", done);
+                fflush(my_lfp);
 
                 client_server_data->task = done; /* task number of next task to exec */
                 
