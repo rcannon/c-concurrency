@@ -1,5 +1,0 @@
-CC = gcc
-CFLAGS = -c
-
-AR = ar
-ARFLAGS = -crv
