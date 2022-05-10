@@ -172,4 +172,4 @@ do_client() {
 
 ''
 
-** print out result of sched_getaffinity, make sure they are different for each thread
+* print out result of sched_getaffinity, make sure they are different for each thread

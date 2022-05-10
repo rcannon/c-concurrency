@@ -1,0 +1,129 @@
+
+- put thread_files in /scratch and move once program is finished.
+- use calloc
+- ALL THIS IS ASSUMING WE STORE THINGS IN ROW_MAJOR ORDER
+- row wise mvp only writes any individual value of result vector once
+    - col wise writes value n_cols times.
+- takes longer to write var than get variable
+    - has to ensure cache coherency
+- only write contiguously, but read randomly is okay
+- repeat tasks you want to time until total time is at least 5 min
+- dont use malloc because 
+    1. it might not give you a space that is big enough,
+        and once you fill in data it might copy things over to larger space
+    2. malloc will succeed even when you ask for more memory than you have access to.
+- calloc takes two sizes:
+    1. number of members
+    2. size of each member
+    - tell is one member and calcuate total space yourself
+        - so it allocates memory in a single contiguous block
+- dont allocate in loops
+    - causes memory leaks
+    - potential to allocate more memory than available, so program fails
+        - thus one need to check to see if using more mem than available
+        - so in worst case, just allocate as much as available at beginning
+- freeing memory is operating system function
+    - when your code terminates, the system will free the memory you allocated
+        - OS will recalaim virtual address space
+        - all pages that were used will be marked as not in use (also marked dirty)
+        - UNLESS IT IS SHARED (be sure to do shmdt() at end of program)
+- compiler cant track dataflow after about 120 lines
+    - because code optimization is intractible in large programs
+- timing:
+    - time1 = setup_time + n_interations * time_per_iter
+    - time2 = setup_time + (2 * n_iterations) * time per_iter
+    - setuptime = 2*time1 - time2
+    - n_interations * time_per_iter = time2 - time1
+- parallel row wise mvp reduces the number of communications that need to be done (over prallel col-wise),
+    since you don't need to share colummns
+- only do block-row (not block-column) inner product
+- block algorithm requires access to fewer elements of vector (more data reuse)
+    - save on memory accesses (much slower than cpu operations)
+    - this is especially true for matrix-matrix products
+- gpus are really good at 4x4 dense matrix operations (because colors in video games
+- print is system call - this is why we save_errno
+- touched files hshould be in /tmp or /scratch
+    - copy large input files there as well
+- row wise inner product should be best
+- thread 0 should build matrix,
+    then share it in separate shm segment
+- cant have clients write their result to same vector, because overlapping cache lines
+- try not using all the cores, just 63 or 62
+    - offset binds so none bind to cpu 0
+- profile on intel compiler: pass -p flag when compiling and linking
+    - when running, it will create output file that you can pass to gprof
+- assemble resulting vector into shared memory.
+    - client sends result to server, which puts it in shared segment.
+        - there are faster ways, but when it comes to distributed memory this is best.
+    - shared segment because in real problems the resulting vector will probably need to be used again.
+- be sure to msync different updates separately in order to ensure updates
+    are flushed to memory in correct order
+
+    
+        
+
+Task:
+- generate benchmark program
+- inputs: size of matrix, vector to be multiplied, number of mvp's to compute, check accuracy yes/no
+- if reading stuff from file, make sure to add comment line to parser
+- benchmark program
+    - ingest parameters
+    - use calloc to allocate matrix
+    - check that pointer is not null! (error and exit if so)
+    - build matrix (square)
+    - build the vector
+    - if (check_accuracy)
+        - build exact answer
+        - of one mvp
+        - build test routine that will compare computed answer with exact answer
+    - loop n_iterations
+        - do mvp
+
+Matrix structure (1D array):
+    - each element in diagonal = n_rows (= n_cols)
+    - j > i (above diag) -> 1
+    - i > j -> -1
+
+Vector structure: v[i] = i for i = 0..(n-1)
+
+Result: res[i]  = n * i + \sum_{j = i+1}^n j - \sum_{j = 1}^{i -1} j
+                = n(n+1)/2 - i(i+1)/2 - i(i-1)/2 + n*i
+
+
+// row major, inner product
+double* matrix;
+double* row;
+double* vector;
+double* result;
+row = matrix
+for (i =0; i < n, i++){
+    result[i] = dot(n, row, vector);
+    row += n; // address arith
+}
+double
+dot(n,row, vec)
+{
+    double res;
+    for (j = 0; j < n; j++){
+        res = res + row[i] * vec[i];
+    }
+    return res;
+}
+
+// row major, middle product
+double* matrix;
+double* col
+double* a_ij
+col = matrix;
+for (i =0; i< n; i++) { res[i] = 0.0; } // calloc does this, but if you are doing multiple them it might be a good idea
+for (j = 0; j < n; j++){ // loop over cols
+    a_ij = col;
+    for (i = 0; i < n; i++) { // loop over rows
+        res[i] = res[i] + vec[j]* (*a_ij)
+        a_ij = a_ij + n; // address arith
+    }
+    col = col + 1;
+}
+
+// block mvp method
+

@@ -14,17 +14,15 @@ run_server( FILE* my_lfp
     void* client_client_area;
     volatile struct server_struct * client_server_data;
     volatile struct client_struct * client_client_data;
-    //size_t client_server_size;
+    size_t client_server_size;
     int client_id;
     int ret_val;
     int save_errno;
     int done;
-    size_t msync_size;
 
     //struct server * my_server_data;
     //struct client * my_client_data;
-    //client_server_size = sizeof(struct server_struct);
-    msync_size = mem_per_thread / 2;
+    client_server_size = sizeof(struct server_struct);
 
     done = 0;
     while (done < n_threads-1) {
@@ -50,14 +48,14 @@ run_server( FILE* my_lfp
                 client_server_data->task = done; /* task number of next task to exec */
                 
                 ret_val = msync ( client_server_area
-                                , msync_size // or client_server_size
+                                , client_server_size
                                 , MS_SYNC
                                 );
                 save_errno = errno;
                 if (ret_val == 0){ // no error occured with first msync
                     client_server_data->dialog_counter +=1;
                     ret_val = msync ( client_server_area
-                                    , msync_size // or client_server_size
+                                    , client_server_size
                                     , MS_SYNC
                                     );
                     save_errno = errno;

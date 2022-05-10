@@ -26,7 +26,7 @@ bind( FILE* my_lfp
     */
 
     n_running_cpus = 1024;
-    max_threads = 262144; // kernel specific, might be 1024 on older linux
+    max_threads = 262144;
 
     /* 
     To avoid allocating in loops, allocate once the maximum mask size,

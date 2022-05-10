@@ -54,9 +54,9 @@ echo
 echo "Running program."
 echo 
 
-touch /scratch/start.time
+touch /tmp/start.time
 bin/shared_comm 64
-touch /scratch/end.time
+touch /tmp/end.time
 
 sleep 5
 
@@ -70,6 +70,6 @@ echo
 echo "Times."
 echo 
 
-../seconds_between.pl /scratch/start.time /scratch/end.time
+../seconds_between.pl /tmp/start.time /tmp/end.time
 
 

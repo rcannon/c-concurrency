@@ -16,8 +16,7 @@ run_client( FILE* my_lfp
     int ret_val;
     int save_errno;
     //size_t client_dialog_counter_size;
-    //size_t client_size;
-    size_t msync_size;
+    size_t client_size;
 
     volatile struct server_struct * my_server_data;
     volatile struct client_struct * my_client_data;
@@ -30,7 +29,7 @@ run_client( FILE* my_lfp
     //fflush(my_lfp);
     my_client_data = (struct client_struct *) my_client_area;
     //client_dialog_counter_size = sizeof(my_client_data->dialog_counter);
-    msync_size = mem_per_thread / 2;
+    client_size = sizeof(struct client_struct);
 
     done = 0;
 
@@ -40,7 +39,7 @@ run_client( FILE* my_lfp
         my_client_data->dialog_counter +=1;
 
         ret_val = msync ( my_client_area
-                        , msync_size // or client_size
+                        , client_size
                         , MS_SYNC
                         );
         save_errno = errno;

@@ -27,11 +27,6 @@ main(int argc, char** argv) {
     void* shm_addr_base;
     size_t mem_per_thread;
     size_t min_shm_size_per_client;
-    int shm_id;
-
-    // syscall stuff
-    int save_errno;
-    int syscall_result;
 
     if (argc != 2) {
         print_string(stdout, "expecting exactly one arguement.");
@@ -54,7 +49,7 @@ main(int argc, char** argv) {
         fflush(stdout);
 
         shm_addr_base = (void *) -1;
-        shm_id = init_shm(nthreads, mem_per_thread, &shm_addr_base);
+        init_shm(nthreads, mem_per_thread, &shm_addr_base);
 
         // fork process
         my_thread_id = hypercube(nthreads);
@@ -81,40 +76,9 @@ main(int argc, char** argv) {
         }
 
         /* clean up */
-        syscall_result = shmdt(shm_addr_base);
-        save_errno = errno;
-        if (syscall_result != 0){
-            if (my_lfp){
-                fprintf ( my_lfp
-                        , "shmdt: detatch failed with errno = %d, %s\n"
-                        , save_errno
-                        , strerror(save_errno)
-                        );
-                fflush(my_lfp);
-            }
-            else {
-                print_outfile_not_found(my_thread_id);
-            }
-        }
-
-        if (my_thread_id == 0){
-            syscall_result = shmctl(shm_id, IPC_RMID, NULL);
-            save_errno = errno;
-            if (syscall_result != 0){
-                if (my_lfp){
-                fprintf ( my_lfp
-                        , "shmctl: destroy segment failed with errno = %d, %s\n"
-                        , save_errno
-                        , strerror(save_errno)
-                        );
-                fflush(my_lfp);
-            }
-            else {
-                print_outfile_not_found(my_thread_id);
-                }
-            }
         fclose(my_lfp);
-        }
+        shmdt(shm_addr_base);
     }
+    
     return 0;
 }
