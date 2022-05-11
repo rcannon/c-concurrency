@@ -58,6 +58,19 @@
     - shared segment because in real problems the resulting vector will probably need to be used again.
 - be sure to msync different updates separately in order to ensure updates
     are flushed to memory in correct order
+- thread 0 makes shared mem segment for matrix (and another for vector, and another for result) AFTER all threads have attached to comm shared segment
+    - pass the shmids to the threads using the communicating shared segment
+- instead of having server do aggregation, have even number threads get result from odd numbered threads 
+    - or set up communication tree (these are much more complicated, need to figure out communication between workers)
+    - this will be more important for distributed computing
+    - for starters, just have server rank do aggregation
+- have server do work?
+    - with large enough/ complicated/ multistep problems, better to just have server manage
+- scheduling:
+    - block scheduling : each worker i does rows i*(n/p) to (i+1)n/p (usually the best for symmetric tasks)
+    - round-robin : each worker does every p-th row, starting at i (good for load balancing when tasks are sorted by size, or adjacent tasks are similar in some way)
+    - dynamic : hand out next row when worker is done (better for sparse matrices, distributed memory)
+
 
     
         

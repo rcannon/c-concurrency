@@ -2,4 +2,4 @@
 
 source /etc/profile.d/modules.sh
 module purge
-module load gcc/10.3.0
+module load intel/20.0.4
