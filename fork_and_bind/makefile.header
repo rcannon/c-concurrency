@@ -1,4 +1,4 @@
-CC = gcc
+CC = icc
 CFLAGS = -c
 
 AR = ar
