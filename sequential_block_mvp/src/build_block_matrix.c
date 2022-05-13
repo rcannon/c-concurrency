@@ -36,8 +36,8 @@ build_block_matrix  ( double** matrix
     save_errno = errno;
 
     if (!(*matrix)) {
-        fprintf (stderr
-                , "calloc: failed with errno = %d, %s\n"
+        fprintf ( stderr
+                , "calloc: allocate matrix failed with errno = %d, %s\n"
                 , save_errno
                 , strerror(save_errno)
                 );

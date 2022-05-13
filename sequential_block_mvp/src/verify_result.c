@@ -14,7 +14,7 @@ verify_result   ( double **result
     correct = 1;
     
     for (i = 0; i < result_size; i++){
-        answer = (double) result_size*(result_size+1)/2 - i*(i+1)/2 - i*(i-1)/2 + n*i;
+        answer = (double) result_size*(result_size+1)/2 - i*(i+1)/2 - i*(i-1)/2 + result_size*i;
         correct = correct && (*result_iter == answer);
         result_iter++;
     }

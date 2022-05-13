@@ -1,4 +1,6 @@
 
+#include "print_result.h"
+
 void
 print_result( double** result
             , int result_size     
@@ -8,7 +10,7 @@ print_result( double** result
     
     print_string("printing result.\n");
     for (i = 0; i < result_size; i++){
-        fprintf(stdout, "%.1d ", (*result)[i]);
+        fprintf(stdout, "%.1f ", (*result)[i]);
         flush(stdout);
     }
     print_string("\n");

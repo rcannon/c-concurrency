@@ -3,6 +3,7 @@
 #include "print_string.h"
 #include "build_block_matrix.h"
 #include "build_vector.h"
+#include "allocate_result.h"
 #include "run_block_mvp.h"
 #include "verify_result.h"
 #include "print_result.h"
@@ -40,6 +41,11 @@ main(int argc, char** argv)
                     , num_blocks_in_row_col_row_col
                     , debug
                     );
+
+        allocate_result ( &result
+                        , num_elements_in_block_row_col
+                        , num_blocks_in_row_col_row_col
+                        );
 
         run_block_mvp   ( &result
                         , &matrix
