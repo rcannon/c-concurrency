@@ -6,8 +6,8 @@
 
 void
 allocate_result ( double** result
-                , num_elements_in_block_row_col
-                , num_blocks_in_row_col_row_col
+                , int num_blocks_in_matrix_row_col
+                , int num_elements_in_block_row_col
                 );
 
 #endif

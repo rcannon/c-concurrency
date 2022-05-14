@@ -49,7 +49,7 @@ echo "Running program."
 echo 
 
 touch /scratch/start.time
-bin/mvp 64
+bin/mvp 2 3 1
 touch /scratch/end.time
 
 sleep 5

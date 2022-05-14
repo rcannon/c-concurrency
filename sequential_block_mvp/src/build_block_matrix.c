@@ -11,9 +11,9 @@ build_block_matrix  ( double** matrix
     double* insert_pointer;
     size_t alloc_size;
 
-    int num_blocks_in_matrix
+    int num_blocks_in_matrix;
     int num_elements_in_block;
-    int num_rows_colsin_matrix;
+    int num_rows_cols_in_matrix;
     int num_elements_in_matrix;
 
     int save_errno;
@@ -44,7 +44,7 @@ build_block_matrix  ( double** matrix
         fflush(stderr);
     }
     else {
-        insert_pointer = &(*matrix);
+        insert_pointer = &(**matrix);
 
         // build the matrix - block row major order
 
@@ -55,8 +55,8 @@ build_block_matrix  ( double** matrix
         - elements below the diagonal should be -1
         */
 
-        for ( matrix_row_block_iter = 0; matrix_row_block_iter < num_blocks_in_matrix_row_col, matrix_row_block_iter++){
-            for (matrix_col_block_iter = 0; matrix_col_block_iter < num_blocks_in_matrix_row_col, matrix_col_block_iter++){
+        for ( matrix_row_block_iter = 0; matrix_row_block_iter < num_blocks_in_matrix_row_col; matrix_row_block_iter++){
+            for (matrix_col_block_iter = 0; matrix_col_block_iter < num_blocks_in_matrix_row_col; matrix_col_block_iter++){
 
                 if (matrix_row_block_iter == matrix_col_block_iter){
                     // on diagonal block
@@ -81,30 +81,30 @@ build_block_matrix  ( double** matrix
                 }
                 else if (matrix_row_block_iter < matrix_col_block_iter){
                     // block is above diagonal
-                    for (element_iter = 0; element_iter < num_elements_in_block, element_iter++){
+                    for (element_iter = 0; element_iter < num_elements_in_block; element_iter++){
                         *insert_pointer = 1;
                         insert_pointer++;
                     }
                 }
                 else{
                     // block is below diagonal
-                    for (element_iter = 0; element_iter < num_elements_in_block, element_iter++){
+                    for (element_iter = 0; element_iter < num_elements_in_block; element_iter++){
                         *insert_pointer = -1;
                         insert_pointer++;
                     }
                 }
             }
         }
-        if (debug && (num_elements_in_matrix < 17)){
-            print_string("printing block matrix.\n");
+        if (debug && (num_elements_in_matrix < 81)){
+            print_string(stderr, "printing block matrix.\n");
             for (element_iter = 0; element_iter < num_elements_in_matrix; element_iter++){
-                if (element_iter % num_elements_in_block == 0 ){
-                    print_string(stdout, "\n");
+                fprintf(stderr, "%.1f ", (*matrix)[element_iter]);
+                fflush(stderr);
+                if (((element_iter+1) % num_elements_in_block) == 0 ){
+                    print_string(stderr, "\n");
                 }
-                fprintf(stdout, "%.1d ", (*matrix)[element_iter]);
-                flush(stdout);
             }
-            print_string("\n");
+            print_string(stderr, "\n");
         }
     }
 }

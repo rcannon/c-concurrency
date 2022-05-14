@@ -161,7 +161,8 @@ Matrix structure (1D array):
 Vector structure: v[i] = i for i = 0..(n-1)
 
 Result: res[i]  = n * i + \sum_{j = i+1}^n j - \sum_{j = 1}^{i -1} j
-                = n(n+1)/2 - i(i+1)/2 - i(i-1)/2 + n*i
+                = n(n-1)/2 - i(i+1)/2 - i(i-1)/2 + n*i
+                = n(n-1)/2 - i(n-i)
 
 
 // row major, inner product

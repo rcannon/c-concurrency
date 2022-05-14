@@ -8,10 +8,10 @@ print_result( double** result
 {
     int i;
     
-    print_string("printing result.\n");
+    print_string(stderr, "printing result.\n");
     for (i = 0; i < result_size; i++){
-        fprintf(stdout, "%.1f ", (*result)[i]);
-        flush(stdout);
+        fprintf(stderr, "%.1f ", (*result)[i]);
+        fflush(stderr);
     }
-    print_string("\n");
+    print_string(stderr,"\n");
 }

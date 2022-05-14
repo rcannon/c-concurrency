@@ -16,7 +16,7 @@ build_vector( double** vector
     vector_size = num_blocks_in_matrix_row_col * num_elements_in_block_row_col;
 
     // allocate space for vector
-    *vector = calloc(1, vector_size);
+    *vector = (double*) calloc(1, vector_size * sizeof(double));
     save_errno = errno;
     if(!(*vector)){
         fprintf ( stderr
@@ -37,12 +37,12 @@ build_vector( double** vector
         }
 
         if (debug && (vector_size < 10)){
-            print_string(stdout,"printing vector.\n");
+            print_string(stderr,"printing vector.\n");
             for (iter = 0; iter < vector_size; iter++){
-                fprintf(stdout, "%.1f ", (*vector)[iter]);
-                flush(stdout);
+                fprintf(stderr, "%.1f ", (*vector)[iter]);
+                fflush(stderr);
             }
-            print_string(stdout, "\n");
+            print_string(stderr, "\n");
         }
     }
 }

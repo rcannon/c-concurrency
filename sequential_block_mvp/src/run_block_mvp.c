@@ -30,17 +30,21 @@ run_block_mvp   ( double** result
             for (row_of_block = 0; row_of_block < num_elements_in_block_row_col; row_of_block++) {
                 for (col_of_block= 0; col_of_block < num_elements_in_block_row_col; col_of_block++) {
 
+                    fprintf(stderr, "res_index: %.1f ", *insert_pointer);
+                    fprintf(stderr, "mat_elem: %.1f, vec_elem: %.1f\n", (*matrix_access_pointer),(*vector_access_pointer));
+                    fflush(stderr);
                     *insert_pointer += (*vector_access_pointer) * (*matrix_access_pointer);
-                    vector_access_pointer++;
-                    matrix_access_pointer++;
+                    vector_access_pointer += 1;
+                    matrix_access_pointer += 1;
                 }
-                insert_pointer++;
+                insert_pointer += 1;
                 vector_access_pointer -= num_elements_in_block_row_col;
             }
             vector_access_pointer += num_elements_in_block_row_col;
-            insert_pointer -= num_blocks_in_matrix_row_col;
+            insert_pointer -= num_elements_in_block_row_col;
         }
-        vector_access_pointer = &(*vector);
+        vector_access_pointer = &(**vector);
+        insert_pointer += num_elements_in_block_row_col;
     }
 }
 
