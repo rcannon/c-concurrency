@@ -35,14 +35,6 @@ main(int argc, char** argv)
                             , num_elements_in_block_row_col
                             , debug
                             );
-        
-
-        /*
-        build_vector( &result
-                    , num_blocks_in_matrix_row_col
-                    , num_elements_in_block_row_col
-                    , debug
-                    );*/
 
         build_vector( &vector
                     , num_blocks_in_matrix_row_col
@@ -54,15 +46,6 @@ main(int argc, char** argv)
                         , num_blocks_in_matrix_row_col
                         , num_elements_in_block_row_col
                         );
-        
-        print_string(stderr, "testing vector output\n");
-        int iter;
-        int vector_size = num_blocks_in_matrix_row_col * num_elements_in_block_row_col;
-        for (iter = 0; iter < vector_size; iter++){
-            fprintf(stderr, "%.1f ", (result)[iter]);
-            fflush(stderr);
-        }
-        print_string(stderr, "\n");
 
         run_block_mvp   ( &result
                         , &matrix
@@ -76,13 +59,15 @@ main(int argc, char** argv)
         if (debug) {
             debug = verify_result(&result, result_size);
             if (!debug) {
-                print_string(stderr, "incorrect\n");
+                print_string(stderr, "\nincorrect\n");
             }
             else {
-                print_string(stderr, "correct\n");
+                print_string(stderr, "\ncorrect\n");
             }
         }
-        print_result(&result, result_size);
+        //print_result(&result, result_size);
+
+        print_string(stderr, "\ndone\n");
     }
     return 0;
 }

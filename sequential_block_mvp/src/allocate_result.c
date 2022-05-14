@@ -8,10 +8,12 @@ allocate_result ( double** result
                 )
 {
     int result_size;
+    int alloc_size;
     int save_errno;
 
     result_size = num_elements_in_block_row_col * num_blocks_in_matrix_row_col;
-    *result = (double*) calloc(1, result_size * sizeof(double));
+    alloc_size = result_size * sizeof(double);
+    *result = (double*) calloc(1, alloc_size);
 
     save_errno = errno;
     if (!(*result)) {

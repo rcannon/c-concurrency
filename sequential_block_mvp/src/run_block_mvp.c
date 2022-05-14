@@ -30,9 +30,6 @@ run_block_mvp   ( double** result
             for (row_of_block = 0; row_of_block < num_elements_in_block_row_col; row_of_block++) {
                 for (col_of_block= 0; col_of_block < num_elements_in_block_row_col; col_of_block++) {
 
-                    fprintf(stderr, "res_index: %.1f ", *insert_pointer);
-                    fprintf(stderr, "mat_elem: %.1f, vec_elem: %.1f\n", (*matrix_access_pointer),(*vector_access_pointer));
-                    fflush(stderr);
                     *insert_pointer += (*vector_access_pointer) * (*matrix_access_pointer);
                     vector_access_pointer += 1;
                     matrix_access_pointer += 1;
@@ -47,21 +44,3 @@ run_block_mvp   ( double** result
         insert_pointer += num_elements_in_block_row_col;
     }
 }
-
-/*
-reg matrix
- 4  1  1  1
--1  4  1  1
--1 -1  4  1
--1 -1 -1  4
-
-block
- 4  1 -1  4     0
- 1  1  1  1     1
--1 -1 -1 -1     2
- 4  1 -1  4     3
-
-result
-
-
-*/

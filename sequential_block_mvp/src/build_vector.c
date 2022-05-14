@@ -10,13 +10,14 @@ build_vector( double** vector
 {
     double* insert_pointer;
     int vector_size;
+    int alloc_size;
     int save_errno;
     int iter;
 
-    vector_size = num_blocks_in_matrix_row_col * num_elements_in_block_row_col;
-
     // allocate space for vector
-    *vector = (double*) calloc(1, vector_size * sizeof(double));
+    vector_size = num_blocks_in_matrix_row_col * num_elements_in_block_row_col;
+    alloc_size = vector_size * sizeof(double);
+    *vector = (double*) calloc(1, alloc_size);
     save_errno = errno;
     if(!(*vector)){
         fprintf ( stderr
