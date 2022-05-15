@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #SBATCH -A ops
-#SBATCH -p short
+#SBATCH -p dl
 ##SBATCH --ntasks-per-node=64
 #SBATCH -N 1
-#SBATCH -t 5
+#SBATCH -t 20
 #SBATCH -o out%J.out
 #SBATCH -e err%J.out
 #SBATCH -J seq_mvp
@@ -48,9 +48,13 @@ echo
 echo "Running program."
 echo 
 
-touch /scratch/start.time
-bin/mvp 100 100 1
-touch /scratch/end.time
+touch /scratch/start1.time
+bin/mvp 200 200 300 0
+touch /scratch/end1.time
+
+touch /scratch/start2.time
+bin/mvp 200 200 600 0
+touch /scratch/end2.time
 
 sleep 5
 
@@ -64,6 +68,7 @@ echo
 echo "Times."
 echo 
 
-../seconds_between.pl /scratch/start.time /scratch/end.time
+../seconds_between.pl /scratch/start1.time /scratch/end1.time
+../seconds_between.pl /scratch/start2.time /scratch/end2.time
 
 
