@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #SBATCH -A ops
-#SBATCH -p dl
+#SBATCH -p fat
 ##SBATCH --ntasks-per-node=64
 #SBATCH -N 1
-#SBATCH -t 20
+#SBATCH -t 120
 #SBATCH -o out%J.out
 #SBATCH -e err%J.out
 #SBATCH -J seq_mvp
@@ -49,14 +49,14 @@ echo "Running program."
 echo 
 
 touch /scratch/start1.time
-bin/mvp 200 200 300 0
+bin/mvp 450 450 10 0
 touch /scratch/end1.time
 
 touch /scratch/start2.time
-bin/mvp 200 200 600 0
+bin/mvp 450 450 20 0
 touch /scratch/end2.time
 
-sleep 5
+#sleep 5
 
 echo 
 echo "Cleaning."

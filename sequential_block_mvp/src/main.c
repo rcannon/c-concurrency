@@ -19,7 +19,6 @@ main(int argc, char** argv)
     int num_elements_in_block_row_col;
     int num_iterations;
     int iter;
-    int result_size;
     int debug;
 
     if (argc != 5){
@@ -66,11 +65,12 @@ main(int argc, char** argv)
                                 , num_elements_in_block_row_col
                                 );
             }
-        
-            result_size = num_blocks_in_matrix_row_col * num_elements_in_block_row_col;
 
             if (debug) {
-                debug = verify_result(&result, result_size);
+                debug = verify_result( &result
+                                     , num_blocks_in_matrix_row_col
+                                     , num_elements_in_block_row_col
+                                     );
                 if (!debug) {
                     print_string(stderr, "\nincorrect\n");
                 }

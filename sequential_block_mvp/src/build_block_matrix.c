@@ -11,18 +11,18 @@ build_block_matrix  ( double** matrix
     double* insert_pointer;
     size_t alloc_size;
 
-    int num_blocks_in_matrix;
-    int num_elements_in_block;
-    int num_rows_cols_in_matrix;
-    int num_elements_in_matrix;
+    size_t num_blocks_in_matrix;
+    size_t num_elements_in_block;
+    size_t num_rows_cols_in_matrix;
+    size_t num_elements_in_matrix;
 
     int save_errno;
 
-    int matrix_row_block_iter;
-    int matrix_col_block_iter;
-    int block_row_iter;
-    int block_col_iter;
-    int element_iter;
+    size_t matrix_row_block_iter;
+    size_t matrix_col_block_iter;
+    size_t block_row_iter;
+    size_t block_col_iter;
+    size_t element_iter;
     
     // assuming everythins is square
     num_rows_cols_in_matrix = num_blocks_in_matrix_row_col * num_elements_in_block_row_col;
@@ -32,7 +32,9 @@ build_block_matrix  ( double** matrix
 
     // allocate space for the matrix
     alloc_size = num_elements_in_matrix * sizeof(double);
-    *matrix = (double*) calloc(1, alloc_size);
+    //fprintf(stderr, "alloc size: %ld\n", alloc_size);
+    //fflush(stderr);
+    *matrix = calloc(1, alloc_size);
     save_errno = errno;
 
     if (!(*matrix)) {

@@ -7,15 +7,15 @@ Currently Loaded Modulefiles:
 printenv output
 
 MKLROOT=/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/mkl
-SLURM_NODELIST=dl09
+SLURM_NODELIST=dl01
 MODULE_VERSION_STACK=3.2.10
 MANPATH=/share/apps/intel/2020u4/man/common:/share/apps/intel/2020u4/documentation_2020/en/debugger/gdb-ia/man/:/usr/share/man:
 SLURM_JOB_NAME=seq_mvp
 PDSHROOT=/opt/pdsh
-XDG_SESSION_ID=93639
-SLURMD_NODENAME=dl09
-SLURM_TOPOLOGY_ADDR=.hdr02.dl09
-HOSTNAME=dl09
+XDG_SESSION_ID=7290
+SLURMD_NODENAME=dl01
+SLURM_TOPOLOGY_ADDR=.hdr02.dl01
+HOSTNAME=dl01
 TERM_PROGRAM=vscode
 SLURM_PRIO_PROCESS=0
 IPPROOT=/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/ipp
@@ -27,9 +27,9 @@ SLURM_JOB_QOS=normal
 HISTSIZE=1000
 TMPDIR=/tmp
 SLURM_TOPOLOGY_ADDR_PATTERN=switch.switch.node
-SSH_CLIENT=130.20.196.124 51391 22
+SSH_CLIENT=130.20.195.173 56065 22
 LIBRARY_PATH=/qfs/projects/ops/rh7_gpu/intel/2020u4/compilers_and_libraries_2020.4.304/linux/mpi/intel64/libfabric/lib:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/ipp/lib/intel64:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/compiler/lib/intel64_lin:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/mkl/lib/intel64_lin:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/tbb/lib/intel64/gcc4.8:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/tbb/lib/intel64/gcc4.8:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/daal/lib/intel64_lin:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/daal/../tbb/lib/intel64_lin/gcc4.4:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/daal/../tbb/lib/intel64_lin/gcc4.8
-TERM_PROGRAM_VERSION=1.66.2
+TERM_PROGRAM_VERSION=1.67.0
 SLURM_JOB_GPUS=0,1
 ROCKSROOT=/opt/rocks/share/devel
 ANT_HOME=/opt/rocks
@@ -40,17 +40,17 @@ LD_LIBRARY_PATH=/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linu
 PSTLROOT=/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/pstl
 ROCKS_ROOT=/opt/rocks
 CPATH=/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/ipp/include:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/mkl/include:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/pstl/include:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/pstl/stdlib:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/tbb/include:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/tbb/include:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/daal/include
-SLURM_JOBID=793030
+SLURM_JOBID=793930
 SALLOC_KILL_CMD=9
 SYSTEM_NAME=deception
 NLSPATH=/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/compiler/lib/intel64/locale/%l_%t/%N:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/mkl/lib/intel64_lin/locale/%l_%t/%N:/share/apps/intel/2020u4/debugger_2020/gdb/intel64/share/locale/%l_%t/%N
 SLURM_TASKS_PER_NODE=16
 MODULE_VERSION=3.2.10
 MAIL=/var/spool/mail/cann484
-PATH=/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/bin/intel64:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/bin:/share/apps/intel/2020u4/debugger_2020/gdb/intel64/bin:/qfs/people/cann484/.vscode-server/bin/dfd34e8260c270da74b5c2d86d61aee4b6d56977/bin/remote-cli:/people/cann484/.poetry/bin:/people/cann484/.cargo/bin:/people/scicons/deception/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ganglia/bin:/opt/ganglia/sbin:/opt/pdsh/bin:/opt/rocks/bin:/opt/rocks/sbin:/people/cann484/.local/bin:/people/cann484/bin:/people/cann484/.local/bin
+PATH=/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/bin/intel64:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/bin:/share/apps/intel/2020u4/debugger_2020/gdb/intel64/bin:/qfs/people/cann484/.vscode-server/bin/57fd6d0195bb9b9d1b49f6da5db789060795de47/bin/remote-cli:/people/cann484/.poetry/bin:/people/cann484/.cargo/bin:/people/scicons/deception/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ganglia/bin:/opt/ganglia/sbin:/opt/pdsh/bin:/opt/rocks/bin:/opt/rocks/sbin:/people/cann484/.local/bin:/people/cann484/bin:/people/cann484/.local/bin
 SLURM_WORKING_CLUSTER=deception:rc-admin01:6817:9216:101
 SLURM_CONF=/etc/slurm/slurm.conf
-SLURM_JOB_ID=793030
+SLURM_JOB_ID=793930
 TBBROOT=/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/tbb
 F90=ifort
 SLURM_JOB_USER=cann484
@@ -68,7 +68,7 @@ I_MPI_F90=ifort
 F77=ifort
 SLURM_SUBMIT_DIR=/qfs/people/cann484/ppp/sequential_block_mvp
 I_MPI_CC=icc
-SLURM_TASK_PID=19282
+SLURM_TASK_PID=12794
 DAALROOT=/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/daal
 SLURM_CPUS_ON_NODE=16
 CXX=icpc
@@ -78,12 +78,12 @@ SSH_ASKPASS=/usr/libexec/openssh/gnome-ssh-askpass
 HISTCONTROL=ignoredups
 KRB5CCNAME=KEYRING:persistent:275223
 INTEL_PYTHONHOME=/share/apps/intel/2020u4/debugger_2020/python/intel64/
-SLURM_JOB_NODELIST=dl09
+SLURM_JOB_NODELIST=dl01
 SHLVL=5
 HOME=/people/cann484
 I_MPI_CXX=icpc
 SLURM_LOCALID=0
-VSCODE_GIT_ASKPASS_MAIN=/qfs/people/cann484/.vscode-server/bin/dfd34e8260c270da74b5c2d86d61aee4b6d56977/extensions/git/dist/askpass-main.js
+VSCODE_GIT_ASKPASS_MAIN=/qfs/people/cann484/.vscode-server/bin/57fd6d0195bb9b9d1b49f6da5db789060795de47/extensions/git/dist/askpass-main.js
 SLURM_JOB_GID=100
 SLURM_JOB_CPUS_PER_NODE=16
 SLURM_CLUSTER_NAME=deception
@@ -91,25 +91,25 @@ ROLLSROOT=/opt/rocks/share/devel/src/roll
 PNNL_COMPILER_VERSION=20.0.4
 FC=ifort
 SLURM_GTIDS=0
-SLURM_SUBMIT_HOST=deception01.local
-SLURM_JOB_PARTITION=dl
+SLURM_SUBMIT_HOST=deception04.local
+SLURM_JOB_PARTITION=fat
 LOGNAME=cann484
 PNNL_COMPILER=intel
 CLASSPATH=/qfs/projects/ops/rh7_gpu/intel/2020u4/compilers_and_libraries_2020.4.304/linux/mpi/intel64/lib/mpi.jar:/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/daal/lib/daal.jar
 GPU_DEVICE_ORDINAL=0,1
 SLURM_JOB_ACCOUNT=ops
 XDG_DATA_DIRS=/people/cann484/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
-SSH_CONNECTION=130.20.196.124 51391 130.20.68.66 22
+SSH_CONNECTION=130.20.195.173 56065 130.20.68.69 22
 VSCODE_GIT_IPC_HANDLE=/run/user/275223/vscode-git-254b966db0.sock
 SLURM_JOB_NUM_NODES=1
 MODULESHOME=/share/apps/modules/Modules/3.2.10
-VSCODE_IPC_HOOK_CLI=/run/user/275223/vscode-ipc-c319fff7-b645-45e6-83a6-01b82d630e32.sock
+VSCODE_IPC_HOOK_CLI=/run/user/275223/vscode-ipc-776fc833-6447-467a-9681-b4cdcb65e29d.sock
 PKG_CONFIG_PATH=/share/apps/intel/2020u4/compilers_and_libraries_2020.4.304/linux/mkl/bin/pkgconfig
 LESSOPEN=||/usr/bin/lesspipe.sh %s
-BROWSER=/qfs/people/cann484/.vscode-server/bin/dfd34e8260c270da74b5c2d86d61aee4b6d56977/bin/helpers/browser.sh
+BROWSER=/qfs/people/cann484/.vscode-server/bin/57fd6d0195bb9b9d1b49f6da5db789060795de47/bin/helpers/browser.sh
 INFOPATH=/share/apps/intel/2020u4/documentation_2020/en/debugger/gdb-ia/info/
-VSCODE_GIT_ASKPASS_NODE=/qfs/people/cann484/.vscode-server/bin/dfd34e8260c270da74b5c2d86d61aee4b6d56977/node
-GIT_ASKPASS=/qfs/people/cann484/.vscode-server/bin/dfd34e8260c270da74b5c2d86d61aee4b6d56977/extensions/git/dist/askpass.sh
+VSCODE_GIT_ASKPASS_NODE=/qfs/people/cann484/.vscode-server/bin/57fd6d0195bb9b9d1b49f6da5db789060795de47/node
+GIT_ASKPASS=/qfs/people/cann484/.vscode-server/bin/57fd6d0195bb9b9d1b49f6da5db789060795de47/extensions/git/dist/askpass.sh
 CC=icc
 XDG_RUNTIME_DIR=/run/user/275223
 COLORTERM=truecolor
@@ -123,7 +123,7 @@ core file size          (blocks, -c) 0
 data seg size           (kbytes, -d) unlimited
 scheduling priority             (-e) 0
 file size               (blocks, -f) unlimited
-pending signals                 (-i) 256077
+pending signals                 (-i) 1546237
 max locked memory       (kbytes, -l) unlimited
 max memory size         (kbytes, -m) unlimited
 open files                      (-n) 64000
@@ -138,19 +138,17 @@ file locks                      (-x) unlimited
 
 Building.
 
-icc -Iinclude -MMD -MP -c -Wall -c src/allocate_result.c -o obj/allocate_result.o
 icc -Iinclude -MMD -MP -c -Wall -c src/build_block_matrix.c -o obj/build_block_matrix.o
-mkdir -p bin
 icc -Llib obj/print_result.o obj/verify_result.o obj/build_vector.o obj/print_string.o obj/run_block_mvp.o obj/main.o obj/allocate_result.o obj/build_block_matrix.o -lm -o bin/mvp
 
 ldd output
 
-	linux-vdso.so.1 =>  (0x00007ffed4981000)
-	libm.so.6 => /lib64/libm.so.6 (0x00002b4541d32000)
-	libgcc_s.so.1 => /lib64/libgcc_s.so.1 (0x00002b4542034000)
-	libc.so.6 => /lib64/libc.so.6 (0x00002b454224a000)
-	libdl.so.2 => /lib64/libdl.so.2 (0x00002b4542618000)
-	/lib64/ld-linux-x86-64.so.2 (0x00002b4541b0e000)
+	linux-vdso.so.1 =>  (0x00007ffe286d8000)
+	libm.so.6 => /lib64/libm.so.6 (0x00002b6ead8ac000)
+	libgcc_s.so.1 => /lib64/libgcc_s.so.1 (0x00002b6eadbae000)
+	libc.so.6 => /lib64/libc.so.6 (0x00002b6eaddc4000)
+	libdl.so.2 => /lib64/libdl.so.2 (0x00002b6eae192000)
+	/lib64/ld-linux-x86-64.so.2 (0x00002b6ead688000)
 
 program output
 
@@ -182,9 +180,9 @@ removed directory: ‘obj’
 
 Times.
 
--rw-r--r-- 1 cann484 users 0 2022-05-15 04:59:20.268331461 -0700 /scratch/end1.time
--rw-r--r-- 1 cann484 users 0 2022-05-15 04:54:07.488480721 -0700 /scratch/start1.time
-seconds between /scratch/start1.time and /scratch/end1.time creation is 312.77985074
--rw-r--r-- 1 cann484 users 0 2022-05-15 05:09:40.721855195 -0700 /scratch/end2.time
--rw-r--r-- 1 cann484 users 0 2022-05-15 04:59:20.269331462 -0700 /scratch/start2.time
-seconds between /scratch/start2.time and /scratch/end2.time creation is 620.452523733
+-rw-r--r-- 1 cann484 users 0 2022-05-16 06:20:12.702031035 -0700 /scratch/end1.time
+-rw-r--r-- 1 cann484 users 0 2022-05-16 06:11:41.310423164 -0700 /scratch/start1.time
+seconds between /scratch/start1.time and /scratch/end1.time creation is 511.391607871
+-rw-r--r-- 1 cann484 users 0 2022-05-16 06:34:00.039612085 -0700 /scratch/end2.time
+-rw-r--r-- 1 cann484 users 0 2022-05-16 06:20:12.704031042 -0700 /scratch/start2.time
+seconds between /scratch/start2.time and /scratch/end2.time creation is 827.335581043

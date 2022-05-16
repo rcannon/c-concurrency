@@ -9,15 +9,15 @@ build_vector( double** vector
             )
 {
     double* insert_pointer;
-    int vector_size;
-    int alloc_size;
+    size_t vector_size;
+    size_t alloc_size;
     int save_errno;
-    int iter;
+    size_t iter;
 
     // allocate space for vector
     vector_size = num_blocks_in_matrix_row_col * num_elements_in_block_row_col;
     alloc_size = vector_size * sizeof(double);
-    *vector = (double*) calloc(1, alloc_size);
+    *vector = calloc(1, alloc_size);
     save_errno = errno;
     if(!(*vector)){
         fprintf ( stderr
