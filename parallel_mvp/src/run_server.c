@@ -4,89 +4,105 @@
 void
 run_server( FILE* my_lfp
           , void* shm_addr_base
-          , int my_thread_id
           , int n_threads
           , size_t mem_per_thread
+          , size_t num_blocks_in_matrix_row_col
+          , size_t num_elements_in_block_row_col
           ) 
 {
-    void* client_shm_area;
-    void* client_server_area;
-    void* client_client_area;
-    volatile struct server_struct * client_server_data;
-    volatile struct client_struct * client_client_data;
-    size_t client_server_size;
-    int client_id;
-    int ret_val;
-    int save_errno;
-    int done;
+    // shared memory general
+    key_t shm_key;
+    int ftok_number;
 
-    //struct server * my_server_data;
-    //struct client * my_client_data;
-    client_server_size = sizeof(struct server_struct);
+    // shared memory matrix
+    void* matrix_base_addr;
+    int matrix_shm_id;
 
-    done = 0;
-    while (done < n_threads-1) {
+    // shared_memory - vector
+    void* vector_base_addr;
+    int matrix_shm_id;
 
-        for (client_id = 1; client_id < n_threads; client_id++) {
+    //shared memory - result
+    void* result_base_addr;
+    int result_shm_id;
 
-            /* caution address arithmetic */
-            client_shm_area = shm_addr_base + client_id * mem_per_thread;
-            client_server_area = client_shm_area;
-            client_client_area = client_server_area + (mem_per_thread / 2);
+    // matrix vector attributes
+    size_t matrix_size;
+    size_t vector_size;
+    size_t result_size;
 
-            client_server_data = (struct server_struct *) client_server_area;
-            client_client_data = (struct client_struct *) client_client_area;
+    // setup matrix shm segment
+    system("touch /dev/shm/matrix");
+    ftok_number = 43;
+    shm_key = ftok("/dev/shm/matrix", ftok_number);
+    matrix_size = pow(num_blocks_in_matrix_row_col, 2) 
+                * pow(num_elements_in_block_row_col, 2)
+    matrix_shm_id = shm_setup_double_array
+        ( my_lfp
+        , shm_key
+        , matrix_size
+        , &matrix_base_addr
+        );
+    fill_matrix
+        ( my_lfp
+        , &matrix_base_addr
+        , num_blocks_in_matrix_row_col
+        , num_elements_in_block_row_col
+        );
 
-            // check if client is ready for task
-            if (client_client_data->dialog_counter > client_server_data->dialog_counter) {
+    // setup vector shm segment
+    system("touch /dev/shm/vector");
+    ftok_number = 44;
+    shm_key = ftok("/dev/shm/vector", ftok_number);
+    vector_size = num_blocks_in_matrix_row_col 
+                * num_elements_in_block_row_col
+    vector_shm_id = shm_setup_double_array
+        ( my_lfp
+        , shm_key
+        , vector_size
+        , &vector_base_addr
+        );
+    fill_vector
+        ( my_lfp
+        , &vector_base_addr
+        , num_blocks_in_matrix_row_col
+        , num_elements_in_block_row_col
+        );
 
-                done += 1;
+    // setup result shm segmet
+    system("touch /dev/shm/result");
+    ftok_number = 45;
+    shm_key = ftok("/dev/shm/result", ftok_number);
+    result_size = num_blocks_in_matrix_row_col
+                * num_elements_in_block_row_col
+    result_shm_id = shm_setup_double_array
+        ( my_lfp
+        , shm_key
+        , result_size
+        , &result_base_addr
+        );
 
-                fprintf(my_lfp, "now on job %d\n", done);
-                fflush(my_lfp);
+    // give clients matrix vector shmids
+    send_clients_mat_vec_shmids
+        ( my_lfp
+        , shm_addr_base
+        , n_threads
+        , mem_per_thread
+        , matrix_shm_id
+        , vector_shm_id
+        );
 
-                client_server_data->task = done; /* task number of next task to exec */
-                
-                ret_val = msync ( client_server_area
-                                , client_server_size
-                                , MS_SYNC
-                                );
-                save_errno = errno;
-                if (ret_val == 0){ // no error occured with first msync
-                    client_server_data->dialog_counter +=1;
-                    ret_val = msync ( client_server_area
-                                    , client_server_size
-                                    , MS_SYNC
-                                    );
-                    save_errno = errno;
-                    if (ret_val != 0){ // error occured with second msync
-                        if (my_lfp){
-                            fprintf ( my_lfp
-                                    , "msync: syncing failed with errno = %d, %s\n"
-                                    , save_errno
-                                    , strerror(save_errno)
-                                    );
-                            fflush(my_lfp);
-                        }
-                        else {
-                            print_outfile_not_found(my_thread_id);
-                        }
-                    }
-                }
-                else { // error occured with first msync
-                    if (my_lfp){
-                        fprintf ( my_lfp
-                                , "msync: syncing failed with errno = %d, %s\n"
-                                , save_errno
-                                , strerror(save_errno)
-                                );
-                        fflush(my_lfp);
-                    }
-                    else { 
-                        print_outfile_not_found(my_thread_id);
-                    }
-                }
-            }
-        }
-    }
+    // get mvp result from clients
+    get_mvp_result
+        ( my_lfp
+        , &result
+        , shm_addr_base, 
+        , n_threads
+        , mem_per_thread
+        );
+
+    // detatch from problem specific shared memory
+    shmdt(matrix_base_addr);
+    shmdt(vector_base_addr);
+    shmdt(result_base_addr);
 }

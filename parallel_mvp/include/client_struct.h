@@ -5,8 +5,7 @@
 struct client_struct
 {
     int64_t dialog_counter;
-    int64_t task;
-    //int64_t state;
+    int64_t result;
 };
 
 #endif

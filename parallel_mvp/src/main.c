@@ -23,23 +23,29 @@ main(int argc, char** argv) {
     int file_threadname_start;
     char my_lfp_name[4096]; /* big enough */
 
-    /* shared memory */
+    /* shared memory - communication */
     void* shm_addr_base;
     size_t mem_per_thread;
     size_t min_shm_size_per_client;
 
-    if (argc != 2) {
-        print_string(stdout, "expecting exactly one arguement.");
+    // matrix attributes
+    size_t num_blocks_in_matrix_row_col;
+    size_t num_elements_in_block_row_col;
+
+    if (argc != 4) {
+        print_string(stderr, "expecting exactly three arguements : num threads, num blocks in row/col, num elelents in block row col.");
     }
 
-    else if (atoi(argv[1]) > 1024) {
-        print_string(stdout, "maximum of 1024 threads allowed.");
+    else if (atoi(argv[1]) > 64) { // 1024
+        print_string(stderr, "maximum of 64 threads allowed.");
     }
 
     else {
 
         // get number of threads to run on
         nthreads = atoi(argv[1]);
+        num_blocks_in_matrix_row_col = atoi(argv[2]);
+        num_elements_in_block_row_col = atoi(argv[3]);
         
         // set up shared memory
         min_shm_size_per_client = sizeof(struct server_struct) 
@@ -69,10 +75,24 @@ main(int argc, char** argv) {
         fflush(my_lfp);
 
         if (my_thread_id == 0){
-            run_server(my_lfp, shm_addr_base, my_thread_id, nthreads, mem_per_thread);
+            run_server
+                ( my_lfp
+                , shm_addr_base
+                , nthreads
+                , mem_per_thread
+                , num_blocks_in_matrix_row_col
+                , num_elements_in_block_row_col
+                );
         }
         else {
-            run_client(my_lfp, shm_addr_base, my_thread_id, mem_per_thread);
+            run_client
+                ( my_lfp
+                , shm_addr_base
+                , my_thread_id
+                , mem_per_thread
+                , num_blocks_in_matrix_row_col
+                , num_elements_in_block_row_col
+                );
         }
 
         /* clean up */

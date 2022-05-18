@@ -17,9 +17,9 @@ init_shm( int n_threads
 
     shm_flag = IPC_CREAT | 0666;
 
-    system("touch /dev/shm/ftok_file");
+    system("touch /dev/shm/shm_comm");
     ftok_number = 42;
-    shm_key = ftok("/dev/shm/ftok_file", ftok_number);
+    shm_key = ftok("/dev/shm/shm_comm", ftok_number);
 
     shm_size = mem_per_thread * n_threads;
 

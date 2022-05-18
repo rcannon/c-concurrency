@@ -5,8 +5,8 @@
 struct server_struct
 {
     int64_t dialog_counter;
-    int64_t task;
-    // int64_t state;
+    int64_t matrix_shm_id;
+    int64_t vector_shm_id;
 };
 
 #endif
