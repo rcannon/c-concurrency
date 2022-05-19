@@ -9,7 +9,7 @@
 #define _SEND_CLIENTS_MAT_VEC_SHMIDS_H_ 1
 
 void
-send_clients_mat_vec_shm_ids
+send_mat_vec_shm_ids
     ( FILE* my_lfp
     , void* shm_addr_base
     , int n_threads

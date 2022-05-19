@@ -9,6 +9,8 @@ shm_setup_double_array
     , void** shm_addr_base
     )
 {
+    void* shm_addr;
+    int shm_id;
     int shm_flag;
     int save_errno;
     int my_thread_id;
@@ -35,23 +37,11 @@ shm_setup_double_array
             print_outfile_not_found(my_thread_id);
         }
     }
-    // attach to shm segment
-    shm_addr = NULL;
-    *shm_addr_base = shmat(shm_id, shm_addr, shm_flag);
-    save_errno = errno;
-    if (*shm_addr_base == (void *) -1){
-        if (my_lfp) {
-            fprintf 
-                ( stderr
-                , "shmat failed with errno: %d, %s\n"
-                , save_errno
-                , strerror(save_errno)
-                );
-        fflush(my_lfp);
-        }  
-        else {
-            print_outfile_not_found(my_thread_id);
-        }
-    } 
+    attach_shm
+        ( my_lfp
+        , shm_addr_base
+        , shm_id
+        );
+
     return shm_id;
 }

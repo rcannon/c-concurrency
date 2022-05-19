@@ -70,6 +70,8 @@ echo
 echo "Times."
 echo 
 
+mv /scratch/out_* thread_files/
+
 ../seconds_between.pl /tmp/start.time /tmp/end.time
 
 

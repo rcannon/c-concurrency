@@ -113,6 +113,18 @@
 - rounding policy : prefer even number
 - compiler directives:
     - give compiler extra info so it can optimize better
+- server tasks management (for resiliency)
+    - three lists:
+        - unscheduled task list
+        - sheduled task list
+        - completed task list
+    - once server has run out of completed task:
+        - resend uncompleted tasks to finished clients 
+            - in case some clients encountered hardware error
+- why intel compiler:
+    - fewer register spills
+        - aka when data must be moved out of register to make room for other data because that other data wasnt added at right time.
+- look into xavx2
 
 
 

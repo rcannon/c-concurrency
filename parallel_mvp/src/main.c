@@ -17,8 +17,8 @@ main(int argc, char** argv) {
     int my_thread_id;
 
     /* per thread output file */
-    int base_filename_length = 18;
-    char* base_filename = "thread_files/out_";
+    int base_filename_length = 14;
+    char base_filename[base_filename_length] = "/scratch/out_";
     int offset;
     int file_threadname_start;
     char my_lfp_name[4096]; /* big enough */
@@ -61,7 +61,6 @@ main(int argc, char** argv) {
         my_thread_id = hypercube(nthreads);
         
         /* get and open unique output file for each process */
-        base_filename = "thread_files/out_";
         FILE* my_lfp = NULL;
         offset = snprintf(my_lfp_name, base_filename_length, base_filename);
         file_threadname_start = offset - base_filename_length;
@@ -89,6 +88,7 @@ main(int argc, char** argv) {
                 ( my_lfp
                 , shm_addr_base
                 , my_thread_id
+                , nthreads
                 , mem_per_thread
                 , num_blocks_in_matrix_row_col
                 , num_elements_in_block_row_col

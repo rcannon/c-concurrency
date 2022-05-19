@@ -29,7 +29,7 @@ build_vector( double** vector
     }
     else {
 
-        insert_pointer = &(**vector);
+        insert_pointer = *vector;
 
         // vector[i] = i
         for (iter = 0; iter < vector_size; iter++){

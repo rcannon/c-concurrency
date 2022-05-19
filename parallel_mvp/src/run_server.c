@@ -2,13 +2,14 @@
 #include "run_server.h"
 
 void
-run_server( FILE* my_lfp
-          , void* shm_addr_base
-          , int n_threads
-          , size_t mem_per_thread
-          , size_t num_blocks_in_matrix_row_col
-          , size_t num_elements_in_block_row_col
-          ) 
+run_server
+    ( FILE* my_lfp
+    , void* shm_addr_base
+    , int n_threads
+    , size_t mem_per_thread
+    , size_t num_blocks_in_matrix_row_col
+    , size_t num_elements_in_block_row_col
+    ) 
 {
     // shared memory general
     key_t shm_key;
@@ -31,12 +32,12 @@ run_server( FILE* my_lfp
     size_t vector_size;
     size_t result_size;
 
-    // setup matrix shm segment
+    // setup matrix
     system("touch /dev/shm/matrix");
     ftok_number = 43;
     shm_key = ftok("/dev/shm/matrix", ftok_number);
     matrix_size = pow(num_blocks_in_matrix_row_col, 2) 
-                * pow(num_elements_in_block_row_col, 2)
+                * pow(num_elements_in_block_row_col, 2);
     matrix_shm_id = shm_setup_double_array
         ( my_lfp
         , shm_key
@@ -45,17 +46,17 @@ run_server( FILE* my_lfp
         );
     fill_matrix
         ( my_lfp
-        , &matrix_base_addr
+        , matrix_base_addr
         , num_blocks_in_matrix_row_col
         , num_elements_in_block_row_col
         );
 
-    // setup vector shm segment
+    // setup vector
     system("touch /dev/shm/vector");
     ftok_number = 44;
     shm_key = ftok("/dev/shm/vector", ftok_number);
     vector_size = num_blocks_in_matrix_row_col 
-                * num_elements_in_block_row_col
+                * num_elements_in_block_row_col;
     vector_shm_id = shm_setup_double_array
         ( my_lfp
         , shm_key
@@ -64,17 +65,17 @@ run_server( FILE* my_lfp
         );
     fill_vector
         ( my_lfp
-        , &vector_base_addr
+        , vector_base_addr
         , num_blocks_in_matrix_row_col
         , num_elements_in_block_row_col
         );
 
-    // setup result shm segmet
+    // setup result
     system("touch /dev/shm/result");
     ftok_number = 45;
     shm_key = ftok("/dev/shm/result", ftok_number);
     result_size = num_blocks_in_matrix_row_col
-                * num_elements_in_block_row_col
+                * num_elements_in_block_row_col;
     result_shm_id = shm_setup_double_array
         ( my_lfp
         , shm_key
@@ -82,8 +83,8 @@ run_server( FILE* my_lfp
         , &result_base_addr
         );
 
-    // give clients matrix vector shmids
-    send_clients_mat_vec_shmids
+    // give clients matrix, vector shmids
+    send_mat_vec_shmids
         ( my_lfp
         , shm_addr_base
         , n_threads
@@ -95,7 +96,7 @@ run_server( FILE* my_lfp
     // get mvp result from clients
     get_mvp_result
         ( my_lfp
-        , &result
+        , result
         , shm_addr_base, 
         , n_threads
         , mem_per_thread

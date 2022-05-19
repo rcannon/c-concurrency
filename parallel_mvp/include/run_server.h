@@ -9,12 +9,13 @@
 #define _RUN_SERVER_H_ 1
 
 void 
-run_server  ( FILE* my_lfp
-            , void* shm_addr_base
-            , int n_threads
-            , size_t mem_per_thread
-            , int argc
-            , char** argv
-            );
+run_server
+    ( FILE* my_lfp
+    , void* shm_addr_base
+    , int n_threads
+    , size_t mem_per_thread
+    , size_t num_blocks_in_matrix_row_col
+    , size_t num_elements_in_block_row_col
+    ) 
 
 #endif

@@ -1,50 +1,47 @@
 
-#include "build_block_matrix.h"
+#include "fill_matrix.h"
 
 void
-build_block_matrix  ( double** matrix
-                    , int num_blocks_in_matrix_row_col
-                    , int num_elements_in_block_row_col
-                    , int debug
-                    )
+fill_matrix
+    ( FILE* my_lfp
+    , void* matrix_base_addr
+    , size_t num_blocks_in_matrix_row_col
+    , size_t num_elements_in_block_row_col
+    )
 {
+
     double* insert_pointer;
-    size_t alloc_size;
 
-    size_t num_blocks_in_matrix;
-    size_t num_elements_in_block;
     size_t num_rows_cols_in_matrix;
-    size_t num_elements_in_matrix;
-
-    int save_errno;
+    size_t num_elements_in_block;
 
     size_t matrix_row_block_iter;
     size_t matrix_col_block_iter;
     size_t block_row_iter;
     size_t block_col_iter;
     size_t element_iter;
-    
-    // assuming everythins is square
-    num_rows_cols_in_matrix = num_blocks_in_matrix_row_col * num_elements_in_block_row_col;
-    num_blocks_in_matrix = pow(num_blocks_in_matrix_row_col,2);
+
+    int my_thread_id;
+    my_thread_id = 0; // only server should call this
+
+    num_row_cols_in_matrix  = num_blocks_in_matrix_row_col 
+                            *  num_elements_in_block_row_col;
     num_elements_in_block = pow(num_elements_in_block_row_col, 2);
-    num_elements_in_matrix = num_blocks_in_matrix * num_elements_in_block;
 
-    // allocate space for the matrix
-    alloc_size = num_elements_in_matrix * sizeof(double);
-    *matrix = calloc(1, alloc_size);
-    save_errno = errno;
-
-    if (!(*matrix)) {
-        fprintf ( stderr
-                , "calloc: allocate matrix failed with errno = %d, %s\n"
-                , save_errno
-                , strerror(save_errno)
+    if ((matrix_base_addr == (void *) -1) || (!matrix_base_addr) ) {
+        if (my_lfp){
+            print_string
+                ( my_lfp
+                , "communication shm_addr_base is -1"
                 );
-        fflush(stderr);
+            fflush(my_lfp);
+        }
+        else { 
+            print_outfile_not_found(my_thread_id);
+        }
     }
     else {
-        insert_pointer = *matrix;
+        insert_pointer = matrix;
 
         // build the matrix - block row major order
 
@@ -94,17 +91,6 @@ build_block_matrix  ( double** matrix
                     }
                 }
             }
-        }
-        if (debug && (num_elements_in_matrix < 81)){
-            print_string(stderr, "printing block matrix.\n");
-            for (element_iter = 0; element_iter < num_elements_in_matrix; element_iter++){
-                fprintf(stderr, "%.1f ", (*matrix)[element_iter]);
-                fflush(stderr);
-                if (((element_iter+1) % num_elements_in_block) == 0 ){
-                    print_string(stderr, "\n");
-                }
-            }
-            print_string(stderr, "\n");
         }
     }
 }

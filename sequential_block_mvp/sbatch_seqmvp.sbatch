@@ -48,13 +48,15 @@ echo
 echo "Running program."
 echo 
 
-touch /scratch/start1.time
-bin/mvp 450 450 10 0
-touch /scratch/end1.time
+bin/mvp 2 2 1 1
 
-touch /scratch/start2.time
-bin/mvp 450 450 20 0
-touch /scratch/end2.time
+#touch /scratch/start1.time
+#bin/mvp 450 450 10 0
+#touch /scratch/end1.time
+
+#touch /scratch/start2.time
+#bin/mvp 450 450 20 0
+#touch /scratch/end2.time
 
 #sleep 5
 
