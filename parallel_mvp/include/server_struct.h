@@ -7,6 +7,7 @@ struct server_struct
     int64_t dialog_counter;
     int64_t matrix_shmid;
     int64_t vector_shmid;
+    int64_t results_shmid;
 };
 
 #endif

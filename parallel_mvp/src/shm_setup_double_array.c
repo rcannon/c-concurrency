@@ -18,7 +18,6 @@ shm_setup_double_array
     my_thread_id = 0; // only server should call this function
 
     shm_flag = IPC_CREAT | 0666;
-    shm_size = shm_size * sizeof(double);
 
     // get shm segment
     shm_id = shmget(shm_key, shm_size, shm_flag);

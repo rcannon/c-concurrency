@@ -3,7 +3,7 @@
 
 void
 init_shm( int n_threads
-        , size_t mem_per_thread
+        , size_t min_mem_per_thread
         , void** shm_addr_base
         )
 {
@@ -17,7 +17,8 @@ init_shm( int n_threads
     ftok_number = 42;
     shm_key = ftok("/dev/shm/shm_comm", ftok_number);
 
-    shm_size = mem_per_thread * n_threads;
+    shm_size = min_mem_per_thread * n_threads;
+    shm_size = calc_shm_size(shm_size);
 
     shm_id = shmget
         (shm_key

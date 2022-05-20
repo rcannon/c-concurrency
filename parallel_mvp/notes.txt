@@ -125,6 +125,21 @@
     - fewer register spills
         - aka when data must be moved out of register to make room for other data because that other data wasnt added at right time.
 - look into xavx2
+- Horner's rule for polynomial evaluation
+    - fuzed multiply adds
+- threads should allocate local memory after they are forked,
+    so the memory allocated is close to them (i.e. in computers with 2 physical cpu chips)
+
+
+Idea: server knows which blocks client is working on by thread_id
+    - client works on while row of blocks
+    - give client every pth row of blocks? or just block of blocks?
+    - define global constant block size
+    - per_thread_mem_size = num_elements_in_block * sizeof(double) + server_struct size + client_struct_size
+        - OR better, set up second shared segment for each client's result
+        - client_struct should have number of how many block elements in result are filled
+            - for when block size doesn't evenly divide matrix_size
+        - block sizes wont be too big (defeats purpose of parallelism), so wont take long to flush
 
 
 

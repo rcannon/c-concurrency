@@ -2,13 +2,13 @@
 #include "send_clients_mat_vec_shmids.h"
 
 void
-send_mat_vec_shm_ids
+send_mat_vec_shmids
     ( FILE* my_lfp
     , void* shm_addr_base
     , int n_threads
     , size_t mem_per_thread
-    , int matrix_shm_id
-    , int vector_shm_id
+    , int matrix_shmid
+    , int vector_shmid
     )
 {
     void* client_shm_area;
@@ -60,7 +60,7 @@ send_mat_vec_shm_ids
                     msync_success = 1;
 
                     // send matrix shm id
-                    client_server_data->matrix_shm_id = matrix_shm_id;
+                    client_server_data->matrix_shmid = matrix_shmid;
                     ret_val = msync( client_server_area, client_server_size, MS_SYNC );
                     save_errno = errno;
                     if (ret_val != 0) { // error occured 
@@ -79,7 +79,7 @@ send_mat_vec_shm_ids
                         }
                     }
                     // send vector shm id
-                    client_server_data->vector_shm_id = vector_shm_id;
+                    client_server_data->vector_shmid = vector_shmid;
                     ret_val = msync( client_server_area, client_server_size, MS_SYNC );
                     save_errno = errno;
                     if (ret_val != 0) { // error occured 

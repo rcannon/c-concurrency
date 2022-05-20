@@ -5,9 +5,7 @@
 struct client_struct
 {
     int64_t dialog_counter;
-    int64_t matrix_shm_id;
-    double result;
-    size_t vector_result_index;
+    int64_t task
 };
 
 #endif

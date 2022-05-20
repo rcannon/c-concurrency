@@ -1,7 +1,7 @@
 
 #include "system_includes.h"
 #include "print_string.h"
-#include "calc_mem_per_thread.h"
+#include "calc_shm_size.h"
 #include "hypercube_fork.h"
 #include "server_struct.h"
 #include "run_server.h"
@@ -50,11 +50,8 @@ main(int argc, char** argv) {
         // set up shared memory
         min_shm_size_per_client = sizeof(struct server_struct) 
                                 + sizeof(struct client_struct);
-        mem_per_thread = calc_mem_per_thread(min_shm_size_per_client);
-        fprintf(stdout, "mem_per_thread: %ld bytes", mem_per_thread);
-        fflush(stdout);
-
         shm_addr_base = (void *) -1;
+        mem_per_thread = calc_shm_size(min_shm_size_per_client);
         init_shm(nthreads, mem_per_thread, &shm_addr_base);
 
         // fork process

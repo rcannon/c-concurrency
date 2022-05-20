@@ -2,7 +2,7 @@
 #include "calc_mem_per_thread.h"
 
 size_t
-calc_mem_per_thread( size_t min_mem_size )
+calc_shm_size( size_t min_mem_size )
 {
     size_t shm_size;
 

@@ -70,4 +70,6 @@ run_client( FILE* my_lfp
         , &vector_addr_base
         , vector_shmid);
     
+    shmdt(matrix_addr_base);
+    shmdt(vector_addr_base);
 }
