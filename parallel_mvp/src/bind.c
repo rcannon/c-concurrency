@@ -76,14 +76,15 @@ bind( FILE* my_lfp
 
         pid = 0;
         CPU_ZERO_S(mask_size, cpu_maskp);
-        CPU_SET_S(my_thread_id, mask_size, cpu_maskp);
+        CPU_SET_S(my_thread_id+1, mask_size, cpu_maskp);
         ret_val = sched_setaffinity(pid, mask_size, cpu_maskp);
         save_errno = errno;
         if (ret_val == 0) {
             core_bound = where_bound(mask_size, cpu_maskp, n_running_cpus, my_lfp);
             if (my_lfp){
                 fprintf( my_lfp
-                       , "bound to core: %d\n"
+                       , "thread %d bound to core %d\n"
+                       , my_thread_id
                        , core_bound
                        );
                 fflush(my_lfp);

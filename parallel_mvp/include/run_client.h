@@ -12,11 +12,10 @@ void
 run_client
     ( FILE* my_lfp
     , void* shm_addr_base
-    , int my_thread_id
-    , int n_threads
-    , size_t mem_per_thread
-    , size_t num_blocks_in_matrix_row_col
-    , size_t num_elements_in_block_row_col
+    , const int my_thread_id
+    , const size_t comm_mem_per_thread
+    , const size_t num_blocks_in_matrix_row_col
+    , const size_t num_elements_in_block_row_col
     );
           
 

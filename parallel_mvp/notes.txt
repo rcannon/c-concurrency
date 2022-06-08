@@ -129,6 +129,19 @@
     - fuzed multiply adds
 - threads should allocate local memory after they are forked,
     so the memory allocated is close to them (i.e. in computers with 2 physical cpu chips)
+- all pointers that point to shared memory should be volatile
+- be sure to sync only next smallest multiple of 4096 after the length of mem you want to sync
+    - int msync_multiplier = (data_size / 4096) + 1
+    - size_t msync_size = msync_multiplier * data_size
+
+
+OPTIMIZATIONS
+    - server stores pointers to client_client_data and client_server_data so no need to recalcualte
+        - volatile struct client_struct ** list_client_structs
+        - struct client_struct ** list_client_structs
+        - pass by ** when sharing shmids
+    - binary fork or modify hypercube so server modes on
+    - clients start on task equal to their thread id as soon as ready
 
 
 Idea: server knows which blocks client is working on by thread_id

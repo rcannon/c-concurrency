@@ -58,16 +58,16 @@ main(int argc, char** argv)
 
             for (iter = 0; iter < num_iterations; iter++){
 
-                run_block_mvp   ( &result
-                                , &matrix
-                                , &vector
+                run_block_mvp   ( result
+                                , matrix
+                                , vector
                                 , num_blocks_in_matrix_row_col
                                 , num_elements_in_block_row_col
                                 );
             }
 
             if (debug) {
-                debug = verify_result( &result
+                debug = verify_result( result
                                      , num_blocks_in_matrix_row_col
                                      , num_elements_in_block_row_col
                                      );

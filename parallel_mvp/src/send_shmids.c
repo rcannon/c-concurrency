@@ -1,20 +1,21 @@
 
-#include "send_clients_mat_vec_shmids.h"
+#include "send_shmids.h"
 
 void
-send_mat_vec_shmids
+send_shmids
     ( FILE* my_lfp
     , void* shm_addr_base
     , int n_threads
     , size_t mem_per_thread
     , int matrix_shmid
     , int vector_shmid
+    , int client_result_shmid
     )
 {
     void* client_shm_area;
     void* client_server_area;
     void* client_client_area;
-    volatile struct server_struct * client_server_data;
+    struct server_struct * client_server_data;
     volatile struct client_struct * client_client_data;
     size_t client_server_size;
     int client_id;
@@ -26,6 +27,7 @@ send_mat_vec_shmids
     int my_thread_id;
 
     my_thread_id = 0; // only server calls this
+    client_server_size = sizeof(struct server_struct);
 
     if ((shm_addr_base == (void *) -1) || (!shm_addr_base)){
         if (my_lfp){
@@ -59,35 +61,21 @@ send_mat_vec_shmids
 
                     msync_success = 1;
 
-                    // send matrix shm id
+                    // send shmids
                     client_server_data->matrix_shmid = matrix_shmid;
-                    ret_val = msync( client_server_area, client_server_size, MS_SYNC );
-                    save_errno = errno;
-                    if (ret_val != 0) { // error occured 
-                        msync_success = 0;
-                        if (my_lfp){
-                            fprintf 
-                                ( my_lfp
-                                , "msync matrix shm id: syncing failed with errno = %d, %s\n"
-                                , save_errno
-                                , strerror(save_errno) 
-                                );
-                            fflush(my_lfp);
-                        }
-                        else { 
-                            print_outfile_not_found(my_thread_id);
-                        }
-                    }
-                    // send vector shm id
                     client_server_data->vector_shmid = vector_shmid;
-                    ret_val = msync( client_server_area, client_server_size, MS_SYNC );
+                    client_server_data->client_result_shmid = client_result_shmid;
+                    ret_val = msync ( client_server_area
+                                    , client_server_size
+                                    , MS_SYNC 
+                                    );
                     save_errno = errno;
                     if (ret_val != 0) { // error occured 
                         msync_success = 0;
                         if (my_lfp){
                             fprintf 
                                 ( my_lfp
-                                , "msync vector shm id: syncing failed with errno = %d, %s\n"
+                                , "msync share shmids: syncing failed with errno = %d, %s\n"
                                 , save_errno
                                 , strerror(save_errno) 
                                 );
@@ -101,13 +89,16 @@ send_mat_vec_shmids
                         // increase dialog counter: client is ready to work on problem
                         done += 1;
                         client_server_data->dialog_counter +=1;
-                        ret_val = msync( client_server_area, client_server_size, MS_SYNC );
+                        ret_val = msync ( client_server_area
+                                        , client_server_size
+                                        , MS_SYNC 
+                                        );
                         save_errno = errno;
                         if (ret_val != 0){ // error occured
                             if (my_lfp){
                                 fprintf 
                                     ( my_lfp
-                                    , "msync server dialog counter: syncing failed with errno = %d, %s\n"
+                                    , "msync share shmids server dialog counter: syncing failed with errno = %d, %s\n"
                                     , save_errno
                                     , strerror(save_errno)
                                     );

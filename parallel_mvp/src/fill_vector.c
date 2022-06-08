@@ -3,10 +3,10 @@
 
 void
 fill_vector
-    ( my_lfp
-    , vector_base_addr
-    , num_blocks_in_matrix_row_col
-    , num_elements_in_block_row_col
+    ( FILE* my_lfp
+    , void* vector_base_addr
+    , size_t num_blocks_in_matrix_row_col
+    , size_t num_elements_in_block_row_col
     )
 {
     double* insert_pointer;
@@ -23,7 +23,7 @@ fill_vector
         if (my_lfp){
             print_string
                 ( my_lfp
-                , "communication shm_addr_base is -1"
+                , "fill vector : addr base is -1"
                 );
             fflush(my_lfp);
         }
@@ -32,7 +32,7 @@ fill_vector
         }
     }
     else {
-        insert_pointer = vector;
+        insert_pointer = vector_base_addr;
 
         // vector[i] = i
         for (iter = 0; iter < vector_size; iter++){

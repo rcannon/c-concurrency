@@ -9,21 +9,18 @@ run_server( FILE* my_lfp
           , size_t mem_per_thread
           ) 
 {
-    void* client_shm_area;
+    volatile void* client_shm_area;
     void* client_server_area;
-    void* client_client_area;
-    volatile struct server_struct * client_server_data;
+    volatile void* client_client_area;
+    struct server_struct * client_server_data;
     volatile struct client_struct * client_client_data;
-    //size_t client_server_size;
+
     int client_id;
     int ret_val;
     int save_errno;
     int done;
     size_t msync_size;
 
-    //struct server * my_server_data;
-    //struct client * my_client_data;
-    //client_server_size = sizeof(struct server_struct);
     msync_size = mem_per_thread / 2;
 
     done = 0;
@@ -35,7 +32,6 @@ run_server( FILE* my_lfp
             client_shm_area = shm_addr_base + client_id * mem_per_thread;
             client_server_area = client_shm_area;
             client_client_area = client_server_area + (mem_per_thread / 2);
-
             client_server_data = (struct server_struct *) client_server_area;
             client_client_data = (struct client_struct *) client_client_area;
 
@@ -50,7 +46,7 @@ run_server( FILE* my_lfp
                 client_server_data->task = done; /* task number of next task to exec */
                 
                 ret_val = msync ( client_server_area
-                                , msync_size // or client_server_size
+                                , msync_size 
                                 , MS_SYNC
                                 );
                 save_errno = errno;

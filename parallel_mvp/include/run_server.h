@@ -16,6 +16,6 @@ run_server
     , size_t mem_per_thread
     , size_t num_blocks_in_matrix_row_col
     , size_t num_elements_in_block_row_col
-    ) 
+    ); 
 
 #endif

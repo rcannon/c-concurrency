@@ -1,13 +1,13 @@
 
 #include "system_includes.h"
 #include "print_string.h"
-#include "calc_shm_size.h"
+#include "calc_mem_per_thread.h"
 #include "hypercube_fork.h"
 #include "server_struct.h"
 #include "run_server.h"
 #include "run_client.h"
 #include "client_struct.h"
-#include "init_shm.h"
+#include "init_comm_shm.h"
 
 int 
 main(int argc, char** argv) {
@@ -18,7 +18,10 @@ main(int argc, char** argv) {
 
     /* per thread output file */
     int base_filename_length = 14;
-    char base_filename[base_filename_length] = "/scratch/out_";
+    char* base_filename = "/scratch/out_";
+    //int base_filename_length = 18;
+    //char* base_filename = "thread_files/out_";
+
     int offset;
     int file_threadname_start;
     char my_lfp_name[4096]; /* big enough */
@@ -33,7 +36,7 @@ main(int argc, char** argv) {
     size_t num_elements_in_block_row_col;
 
     if (argc != 4) {
-        print_string(stderr, "expecting exactly three arguements : num threads, num blocks in row/col, num elelents in block row col.");
+        print_string(stderr, "expecting exactly three arguements : num threads, num blocks in row/col, num elelents in block row/col.");
     }
 
     else if (atoi(argv[1]) > 64) { // 1024
@@ -46,13 +49,20 @@ main(int argc, char** argv) {
         nthreads = atoi(argv[1]);
         num_blocks_in_matrix_row_col = atoi(argv[2]);
         num_elements_in_block_row_col = atoi(argv[3]);
+        if (num_blocks_in_matrix_row_col < nthreads) {
+            nthreads = num_blocks_in_matrix_row_col;
+            print_string(stderr, "more threads than jobs; reducing nthreads to match jobs");
+        }
         
         // set up shared memory
         min_shm_size_per_client = sizeof(struct server_struct) 
                                 + sizeof(struct client_struct);
+        min_shm_size_per_client = 2 * min_shm_size_per_client;  // One struct might be bigger than other; 
+                                                                // ensure the each struct takes up at most half of space.
+                                                                // Could also do 2 * size of largest struct
         shm_addr_base = (void *) -1;
-        mem_per_thread = calc_shm_size(min_shm_size_per_client);
-        init_shm(nthreads, mem_per_thread, &shm_addr_base);
+        mem_per_thread = calc_mem_per_thread(min_shm_size_per_client);
+        init_comm_shm(nthreads, mem_per_thread, &shm_addr_base);
 
         // fork process
         my_thread_id = hypercube(nthreads);
@@ -67,8 +77,7 @@ main(int argc, char** argv) {
         }
 
         /* main */
-        print_string(my_lfp, "hi there!");
-        fflush(my_lfp);
+        print_string(my_lfp, "\nhi there!\n");
 
         if (my_thread_id == 0){
             run_server
@@ -85,7 +94,6 @@ main(int argc, char** argv) {
                 ( my_lfp
                 , shm_addr_base
                 , my_thread_id
-                , nthreads
                 , mem_per_thread
                 , num_blocks_in_matrix_row_col
                 , num_elements_in_block_row_col

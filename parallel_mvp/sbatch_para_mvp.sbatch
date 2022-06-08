@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #SBATCH -A ops
-#SBATCH -p short
+#SBATCH -p fat
 ##SBATCH --ntasks-per-node=64
 #SBATCH -N 1
-#SBATCH -t 5
+#SBATCH -t 10
 #SBATCH -o out%J.out
 #SBATCH -e err%J.out
-#SBATCH -J fnb
+#SBATCH -J mvp
 
 source /etc/profile.d/modules.sh
 source ../env.sh
@@ -34,12 +34,13 @@ echo
 echo "Building."
 echo 
 
+make clean
 make
 
 echo
 echo ldd output
 echo 
-ldd bin/shared_comm
+ldd bin/mvp
 echo 
 echo program output
 echo 
@@ -55,7 +56,7 @@ echo "Running program."
 echo 
 
 touch /tmp/start.time
-bin/shared_comm 64
+bin/mvp 15 1000 100
 touch /tmp/end.time
 
 sleep 5

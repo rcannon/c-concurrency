@@ -1,15 +1,17 @@
 
-#include "init_shm.h"
+#include "init_comm_shm.h"
 
 void
-init_shm( int n_threads
-        , size_t min_mem_per_thread
-        , void** shm_addr_base
-        )
+init_comm_shm
+    ( int n_threads
+    , size_t mem_per_thread
+    , void** shm_addr_base
+    )
 {
     key_t shm_key;
     int shm_id;
     size_t shm_size;
+    int shm_flag;
     int ftok_number;
     int save_errno;
 
@@ -17,11 +19,11 @@ init_shm( int n_threads
     ftok_number = 42;
     shm_key = ftok("/dev/shm/shm_comm", ftok_number);
 
-    shm_size = min_mem_per_thread * n_threads;
-    shm_size = calc_shm_size(shm_size);
+    shm_size = mem_per_thread * n_threads;
+    shm_flag = IPC_CREAT | 0666;
 
     shm_id = shmget
-        (shm_key
+        ( shm_key
         , shm_size
         , shm_flag
         );
@@ -41,3 +43,4 @@ init_shm( int n_threads
         , shm_id
         );
 }
+

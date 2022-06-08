@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH -A ops
-#SBATCH -p fat
+#SBATCH -p dl_shared
 ##SBATCH --ntasks-per-node=64
 #SBATCH -N 1
 #SBATCH -t 120
@@ -48,11 +48,11 @@ echo
 echo "Running program."
 echo 
 
-bin/mvp 2 2 1 1
+#bin/mvp 200 200 1 1
 
-#touch /scratch/start1.time
-#bin/mvp 450 450 10 0
-#touch /scratch/end1.time
+touch /scratch/start1.time
+bin/mvp 230 203 1 0
+touch /scratch/end1.time
 
 #touch /scratch/start2.time
 #bin/mvp 450 450 20 0
@@ -71,6 +71,6 @@ echo "Times."
 echo 
 
 ../seconds_between.pl /scratch/start1.time /scratch/end1.time
-../seconds_between.pl /scratch/start2.time /scratch/end2.time
+#../seconds_between.pl /scratch/start2.time /scratch/end2.time
 
 

@@ -24,7 +24,7 @@ fill_matrix
     int my_thread_id;
     my_thread_id = 0; // only server should call this
 
-    num_row_cols_in_matrix  = num_blocks_in_matrix_row_col 
+    num_rows_cols_in_matrix  = num_blocks_in_matrix_row_col 
                             *  num_elements_in_block_row_col;
     num_elements_in_block = pow(num_elements_in_block_row_col, 2);
 
@@ -41,7 +41,7 @@ fill_matrix
         }
     }
     else {
-        insert_pointer = matrix;
+        insert_pointer = matrix_base_addr;
 
         // build the matrix - block row major order
 

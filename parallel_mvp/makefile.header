@@ -1,5 +1,0 @@
-CC = icc
-CFLAGS = -c
-
-AR = ar
-ARFLAGS = -crv
