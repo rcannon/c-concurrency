@@ -141,18 +141,10 @@ OPTIMIZATIONS
         - struct client_struct ** list_client_structs
         - pass by ** when sharing shmids
     - binary fork or modify hypercube so server modes on
-    - clients start on task equal to their thread id as soon as ready
 
-
-Idea: server knows which blocks client is working on by thread_id
-    - client works on while row of blocks
-    - give client every pth row of blocks? or just block of blocks?
-    - define global constant block size
-    - per_thread_mem_size = num_elements_in_block * sizeof(double) + server_struct size + client_struct_size
-        - OR better, set up second shared segment for each client's result
-        - client_struct should have number of how many block elements in result are filled
-            - for when block size doesn't evenly divide matrix_size
-        - block sizes wont be too big (defeats purpose of parallelism), so wont take long to flush
+fat doesnt have 64 processors:
+    - Doug: try fgrep processor /etc/proc/cpuinfo | wc
+        - error: no such file or directory
 
 
 

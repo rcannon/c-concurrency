@@ -49,14 +49,14 @@ echo
 echo "Remove old thread files."
 echo 
 
-rm ./thread_files/*
+rm -rf thread_files
 
 echo 
 echo "Running program."
 echo 
 
 touch /tmp/start.time
-bin/mvp 15 1000 100
+bin/mvp 15 2000 64
 touch /tmp/end.time
 
 sleep 5
@@ -71,6 +71,7 @@ echo
 echo "Times."
 echo 
 
+mkdir thread_files
 mv /scratch/out_* thread_files/
 
 ../seconds_between.pl /tmp/start.time /tmp/end.time
