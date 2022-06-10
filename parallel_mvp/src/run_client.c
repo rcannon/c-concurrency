@@ -128,12 +128,8 @@ run_client
             // get next block row to work on
             my_client_data->block_row_task = my_server_data->block_row_task;
 
-            fprintf
-                ( my_lfp
-                , "I got task %ld\n"
-                , my_client_data->block_row_task
-                );
-            fflush(my_lfp);
+            //fprintf( my_lfp, "I got task %ld\n", my_client_data->block_row_task);
+            //fflush(my_lfp);
 
             // do mvp
             client_mvp_block_row

@@ -11,31 +11,39 @@ hypercube(int nthreads)
     int done;
 
     my_thread_id = 0;
-    step = 1;
-    done = 0;
 
-    while (!done) {
+    pid = fork();
+    if (pid == -1){
+        print_string(stderr, "forking failed");
+    }
+    else if (pid == 0){
+        // child begins hypercube fork,
+        // so parent can initialize problem
 
-        child_thread_id = my_thread_id + step;
-        if (child_thread_id >= nthreads) {
-            done = 1;
-        }
+        my_thread_id = 1;
+        step = 1;
+        done = 0;
 
-        else {
-            pid = fork();
-            if (pid == 0){
-                /* I am the child */
-                my_thread_id = child_thread_id;
+        while (!done) {
+
+            child_thread_id = my_thread_id + step;
+            if (child_thread_id >= nthreads) {
+                done = 1;
             }
-            else if (pid == -1) {
-                /* fork failed */
-                print_string(stderr, "forking failed");
+            else {
+                pid = fork();
+                if (pid == 0){
+                    /* I am the child */
+                    my_thread_id = child_thread_id;
+                }
+                else if (pid == -1) {
+                    /* fork failed */
+                    print_string(stderr, "forking failed");
+                }
+                step = step + step;
             }
-            step = step + step;
         }
     }
-
     bind(stderr, my_thread_id); 
-
     return(my_thread_id);
 }

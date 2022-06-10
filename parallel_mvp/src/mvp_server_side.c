@@ -14,15 +14,15 @@ mvp_server_side
     , const size_t per_client_results_shm_size
     )
 {
-    void* client_shm_area;
-    void* client_client_area;
     void* client_server_area;
+    void* client_client_area;
     void* client_result_area;
 
     double* result_insert_ptr;
     volatile struct client_struct * client_client_data;
     struct server_struct * client_server_data;
     size_t client_server_size;
+    size_t half_comm_mem_per_thread;
     size_t result_size;
     size_t client_results_size_per_thread;
     size_t next_block_row_task;
@@ -32,7 +32,10 @@ mvp_server_side
     int save_errno;
     int i;
 
+
     client_server_size = sizeof(struct server_struct);
+    half_comm_mem_per_thread = comm_mem_per_thread / 2; // mods are slow operations, so need to store this
+
     result_size = num_blocks_in_matrix_row_col * num_elements_in_block_row_col;
     client_results_size_per_thread = num_elements_in_block_row_col;
     next_block_row_task = 0;
@@ -40,11 +43,15 @@ mvp_server_side
     // send initial tasks to clients
     while (next_block_row_task < n_threads-1){
 
+        // caution address arithmetic
+        client_server_area = comm_shm_addr_base;
+        client_client_area = client_server_area + half_comm_mem_per_thread;
+
         for (thread = 1; thread < n_threads; thread++){
 
-            client_shm_area = comm_shm_addr_base + (thread * comm_mem_per_thread);
-            client_server_area = client_shm_area;
-            client_client_area = client_server_area + (comm_mem_per_thread / 2);
+            // caution address arithmetic
+            client_server_area = client_client_area + half_comm_mem_per_thread;
+            client_client_area = client_server_area + half_comm_mem_per_thread;
             client_server_data = (struct server_struct *) client_server_area;
             client_client_data = (struct client_struct *) client_client_area;
 
@@ -86,25 +93,32 @@ mvp_server_side
     }
     // server loop: read results and hand out next task
     num_finished_block_row_tasks = 0;
+
     while (num_finished_block_row_tasks < num_blocks_in_matrix_row_col){
+
+        // reset addresses
+        // caution address arithmetic
+        client_server_area = comm_shm_addr_base;
+        client_client_area = client_server_area + half_comm_mem_per_thread;
+        client_result_area = client_results_base_addr;
 
         for (thread = 1; thread < n_threads; thread++){
 
-            client_shm_area = comm_shm_addr_base + (thread * comm_mem_per_thread);
-            client_server_area = client_shm_area;
-            client_client_area = client_server_area + (comm_mem_per_thread / 2);
+            // caution address arithmetic
+            client_server_area = client_client_area + half_comm_mem_per_thread;
+            client_client_area = client_server_area + half_comm_mem_per_thread;
             client_server_data = (struct server_struct *) client_server_area;
             client_client_data = (struct client_struct *) client_client_area;
+
+            client_result_area += per_client_results_shm_size;
 
             if (client_client_data->dialog_counter > client_server_data->dialog_counter) {
 
                 // read client result into general result
-                fprintf(my_lfp, "client %d returned task %ld\n", thread, client_client_data->block_row_task);
-                fflush(my_lfp);
+                //fprintf(my_lfp, "client %d returned task %ld\n", thread, client_client_data->block_row_task);
+                //fflush(my_lfp);
                 insert_client_result
-                    ( client_results_base_addr
-                    , thread
-                    , per_client_results_shm_size
+                    ( client_result_area
                     , result_base_addr
                     , num_elements_in_block_row_col
                     , client_client_data->block_row_task

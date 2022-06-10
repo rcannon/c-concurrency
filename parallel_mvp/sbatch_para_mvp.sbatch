@@ -4,7 +4,7 @@
 #SBATCH -p fat
 ##SBATCH --ntasks-per-node=64
 #SBATCH -N 1
-#SBATCH -t 10
+#SBATCH -t 30
 #SBATCH -o out%J.out
 #SBATCH -e err%J.out
 #SBATCH -J mvp
@@ -49,14 +49,14 @@ echo
 echo "Remove old thread files."
 echo 
 
-rm -rf thread_files
+rm thread_files/*
 
 echo 
 echo "Running program."
 echo 
 
 touch /tmp/start.time
-bin/mvp 15 2000 64
+bin/mvp 15 720 32
 touch /tmp/end.time
 
 sleep 5
@@ -71,7 +71,6 @@ echo
 echo "Times."
 echo 
 
-mkdir thread_files
 mv /scratch/out_* thread_files/
 
 ../seconds_between.pl /tmp/start.time /tmp/end.time

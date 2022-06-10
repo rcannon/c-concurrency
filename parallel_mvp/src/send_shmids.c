@@ -18,6 +18,7 @@ send_shmids
     struct server_struct * client_server_data;
     volatile struct client_struct * client_client_data;
     size_t client_server_size;
+    size_t half_mem_per_thread;
     int client_id;
 
     int done;
@@ -28,6 +29,7 @@ send_shmids
 
     my_thread_id = 0; // only server calls this
     client_server_size = sizeof(struct server_struct);
+    half_mem_per_thread = mem_per_thread / 2;
 
     if ((shm_addr_base == (void *) -1) || (!shm_addr_base)){
         if (my_lfp){
@@ -46,13 +48,16 @@ send_shmids
         done = 0;
         while (done < n_threads-1) {
 
+            // caution address arithmetic
+            client_server_area = shm_addr_base;
+            client_client_area = client_server_area + half_mem_per_thread;
+
             for (client_id = 1; client_id < n_threads; client_id++) {
 
                 // access client's server and client area
                 // Note: caution address arithmetic 
-                client_shm_area = shm_addr_base + client_id * mem_per_thread;
-                client_server_area = client_shm_area;
-                client_client_area = client_server_area + (mem_per_thread / 2);
+                client_server_area = client_client_area + half_mem_per_thread;
+                client_client_area = client_server_area + half_mem_per_thread;
                 client_server_data = (struct server_struct *) client_server_area;
                 client_client_data = (struct client_struct *) client_client_area;
 
