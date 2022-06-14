@@ -56,12 +56,20 @@ run_server
         , matrix_shm_size
         , &matrix_base_addr
         );
+    print_string(my_lfp, "starting matrix fill");
+    fflush(my_lfp);
     fill_matrix
         ( my_lfp
         , matrix_base_addr
         , num_blocks_in_matrix_row_col
         , num_elements_in_block_row_col
         );
+    run_msync
+        ( my_lfp
+        , matrix_base_addr
+        , matrix_shm_size
+        );
+    print_string(my_lfp, "finished matrix fill");
 
     // setup vector
     system("touch /dev/shm/vector");
@@ -81,6 +89,11 @@ run_server
         , vector_base_addr
         , num_blocks_in_matrix_row_col
         , num_elements_in_block_row_col
+        );
+    run_msync
+        ( my_lfp
+        , vector_base_addr
+        , vector_shm_size
         );
 
     // setup each client's result vector
@@ -152,10 +165,10 @@ run_server
         , num_elements_in_block_row_col
         );
     if (!correct) {
-        print_string(stderr, "\nincorrect\n");
+        print_string(my_lfp, "\nincorrect\n");
     }
     else {
-        print_string(stderr, "\ncorrect\n");
+        print_string(my_lfp, "\ncorrect\n");
     }
 
     // detatch from problem specific shared memory

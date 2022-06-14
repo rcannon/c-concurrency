@@ -91,10 +91,13 @@ mvp_server_side
             }
         }
     }
+
     // server loop: read results and hand out next task
     num_finished_block_row_tasks = 0;
-
     while (num_finished_block_row_tasks < num_blocks_in_matrix_row_col){
+
+        //fprintf(my_lfp, "working on task %ld of %ld\n", num_finished_block_row_tasks, num_blocks_in_matrix_row_col);
+        //fflush(my_lfp);
 
         // reset addresses
         // caution address arithmetic

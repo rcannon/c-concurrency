@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #SBATCH -A ops
-#SBATCH -p fat
+#SBATCH -p short
 ##SBATCH --ntasks-per-node=64
 #SBATCH -N 1
-#SBATCH -t 30
+#SBATCH -t 60
 #SBATCH -o out%J.out
 #SBATCH -e err%J.out
 #SBATCH -J mvp
@@ -51,12 +51,18 @@ echo
 
 rm thread_files/*
 
+echo
+echo "Max shared memory size (bytes)"
+echo 
+
+cat /proc/sys/kernel/shmmax
+
 echo 
 echo "Running program."
 echo 
 
 touch /tmp/start.time
-bin/mvp 15 720 32
+bin/mvp 63 128 1243 # maximum size
 touch /tmp/end.time
 
 sleep 5

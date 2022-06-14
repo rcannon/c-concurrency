@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #SBATCH -A ops
-#SBATCH -p dl_shared
+#SBATCH -p fat
 ##SBATCH --ntasks-per-node=64
 #SBATCH -N 1
-#SBATCH -t 120
+#SBATCH -t 60
 #SBATCH -o out%J.out
 #SBATCH -e err%J.out
 #SBATCH -J seq_mvp
@@ -51,7 +51,7 @@ echo
 #bin/mvp 200 200 1 1
 
 touch /scratch/start1.time
-bin/mvp 230 203 1 0
+bin/mvp 3600 64 1 0
 touch /scratch/end1.time
 
 #touch /scratch/start2.time

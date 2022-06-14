@@ -68,6 +68,7 @@ run_client
     //print_string(my_lfp, "I got task the shmids\n");
 
     // attach to the shared resources
+    print_string(my_lfp, "begin attaching arrays\n");
     attach_shm // matrix
         ( my_lfp
         , &matrix_addr_base
@@ -81,6 +82,7 @@ run_client
         , &my_result_addr_base
         , my_result_space_shmid
         );
+    print_string(my_lfp, "finished attaching arrays\n");
     
     // move my_result_addr_base based on my_thread_id
     my_result_shm_size  = num_elements_in_block_row_col 
@@ -118,7 +120,7 @@ run_client
         }
 
         // wait for server to give me work
-        while (my_server_data->dialog_counter < my_client_data->dialog_counter);
+        while (my_server_data->dialog_counter < my_client_data->dialog_counter); //{ print_string(my_lfp, "Still ready\n"); }
 
         if (my_server_data->done){ // set done to true and exit the loop
             done = my_server_data->done;
