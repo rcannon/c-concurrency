@@ -1,0 +1,6 @@
+
+neighbor in bitplane i is
+    my_thread_id (xor) 2^(i-1)
+
+should only need two shared arrays of size result to do aggregation
+    - at each bitplane step, switch wich one is being copied to and from

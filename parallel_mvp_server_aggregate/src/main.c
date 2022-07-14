@@ -21,6 +21,7 @@ main(int argc, char** argv) {
     char* base_filename = "/scratch/out_";
     //int base_filename_length = 18;
     //char* base_filename = "thread_files/out_";
+    FILE* my_lfp = NULL;
 
     int offset;
     int file_threadname_start;
@@ -68,7 +69,7 @@ main(int argc, char** argv) {
         my_thread_id = hypercube(nthreads);
         
         /* get and open unique output file for each process */
-        FILE* my_lfp = NULL;
+        my_lfp = NULL;
         offset = snprintf(my_lfp_name, base_filename_length, base_filename);
         file_threadname_start = offset - base_filename_length;
         snprintf(my_lfp_name + offset, file_threadname_start, "%d", my_thread_id);

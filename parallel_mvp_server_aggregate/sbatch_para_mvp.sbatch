@@ -61,9 +61,9 @@ echo
 echo "Running program."
 echo 
 
-touch /tmp/start.time
+touch /scratch/start.time
 bin/mvp 63 128 1243 # maximum size
-touch /tmp/end.time
+touch /scratch/end.time
 
 sleep 5
 
@@ -78,7 +78,12 @@ echo "Times."
 echo 
 
 mv /scratch/out_* thread_files/
+../seconds_between.pl /scratch/start.time /scratch/end.time
 
-../seconds_between.pl /tmp/start.time /tmp/end.time
+echo
+echo "ipcs -a: make sure shm segments are destroyed"
+echo 
+
+ipcs -a
 
 
